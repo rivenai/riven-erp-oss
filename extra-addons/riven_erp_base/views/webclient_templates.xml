@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="riven_erp_login" inherit_id="web.login">
+        <xpath expr="//title" position="replace">
+            <title>Riven ERP</title>
+        </xpath>
+    </template>
+</odoo>

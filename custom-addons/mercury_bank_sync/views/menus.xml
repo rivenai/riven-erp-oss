@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_mercury_root"
+              name="Mercury"
+              parent="account.menu_finance_configuration"
+              sequence="95"/>
+    <menuitem id="menu_mercury_connect"
+              name="Connect Workspace"
+              parent="menu_mercury_root"
+              action="action_mercury_connect_wizard"
+              sequence="10"/>
+    <menuitem id="menu_mercury_links"
+              name="Mercury Connections"
+              parent="menu_mercury_root"
+              action="account_online_synchronization.action_account_online_link"
+              sequence="20"/>
+</odoo>

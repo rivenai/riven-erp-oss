@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- =========== STAGING PARTNERS =========== -->
+    <record id="view_staging_partner_tree" model="ir.ui.view">
+        <field name="name">pes.staging.partner.list</field>
+        <field name="model">pes.staging.partner</field>
+        <field name="arch" type="xml">
+            <list string="Staged Partners" decoration-success="promotion_state=='promoted'"
+                  decoration-info="is_manufacturer_candidate==True">
+                <field name="o18_id"/>
+                <field name="display_name"/>
+                <field name="is_company"/>
+                <field name="is_customer"/>
+                <field name="is_vendor"/>
+                <field name="is_manufacturer_candidate"/>
+                <field name="vat"/>
+                <field name="city"/>
+                <field name="country_code"/>
+                <field name="promotion_state"/>
+                <field name="extraction_run_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_staging_partner_search" model="ir.ui.view">
+        <field name="name">pes.staging.partner.search</field>
+        <field name="model">pes.staging.partner</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="vat"/>
+                <field name="o18_id"/>
+                <filter name="manufacturers" string="Manufacturers"
+                        domain="[('is_manufacturer_candidate','=',True)]"/>
+                <filter name="vendors" string="Vendors" domain="[('is_vendor','=',True)]"/>
+                <filter name="customers" string="Customers" domain="[('is_customer','=',True)]"/>
+                <filter name="not_promoted" string="Not Yet Promoted"
+                        domain="[('promotion_state','!=','promoted')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="by_run" string="Extraction Run"
+                            context="{'group_by':'extraction_run_id'}"/>
+                    <filter name="by_country" string="Country"
+                            context="{'group_by':'country_code'}"/>
+                    <filter name="by_promotion" string="Promotion State"
+                            context="{'group_by':'promotion_state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_staging_partner" model="ir.actions.act_window">
+        <field name="name">Staged Partners (O18)</field>
+        <field name="res_model">pes.staging.partner</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- =========== STAGING INVOICES =========== -->
+    <record id="view_staging_invoice_tree" model="ir.ui.view">
+        <field name="name">pes.staging.invoice.list</field>
+        <field name="model">pes.staging.invoice</field>
+        <field name="arch" type="xml">
+            <list string="Staged Invoices" decoration-warning="is_open==True">
+                <field name="name"/>
+                <field name="move_type"/>
+                <field name="partner_name"/>
+                <field name="invoice_date"/>
+                <field name="amount_total" sum="Total"/>
+                <field name="amount_residual" sum="Residual"/>
+                <field name="state"/>
+                <field name="payment_state"/>
+                <field name="is_open"/>
+                <field name="extraction_run_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_staging_invoice_search" model="ir.ui.view">
+        <field name="name">pes.staging.invoice.search</field>
+        <field name="model">pes.staging.invoice</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_name"/>
+                <field name="ref"/>
+                <filter name="open" string="Open Invoices (Unpaid)"
+                        domain="[('is_open','=',True)]"/>
+                <filter name="customer_invoices" string="Customer Invoices"
+                        domain="[('move_type','=','out_invoice')]"/>
+                <filter name="vendor_bills" string="Vendor Bills"
+                        domain="[('move_type','=','in_invoice')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="by_partner" string="Partner"
+                            context="{'group_by':'partner_name'}"/>
+                    <filter name="by_state" string="State"
+                            context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_staging_invoice" model="ir.actions.act_window">
+        <field name="name">Staged Invoices (O18)</field>
+        <field name="res_model">pes.staging.invoice</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- =========== STAGING SALE ORDERS =========== -->
+    <record id="view_staging_sale_order_tree" model="ir.ui.view">
+        <field name="name">pes.staging.sale.order.list</field>
+        <field name="model">pes.staging.sale.order</field>
+        <field name="arch" type="xml">
+            <list string="Staged Sale Orders">
+                <field name="name"/>
+                <field name="partner_name"/>
+                <field name="o18_date_order"/>
+                <field name="amount_total" sum="Total"/>
+                <field name="state"/>
+                <field name="invoice_status"/>
+                <field name="line_count"/>
+                <field name="extraction_run_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_staging_sale_order" model="ir.actions.act_window">
+        <field name="name">Staged Sale Orders (O18)</field>
+        <field name="res_model">pes.staging.sale.order</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- =========== STAGING PRODUCTS =========== -->
+    <record id="view_staging_product_tree" model="ir.ui.view">
+        <field name="name">pes.staging.product.list</field>
+        <field name="model">pes.staging.product</field>
+        <field name="arch" type="xml">
+            <list string="Staged Products">
+                <field name="default_code"/>
+                <field name="name"/>
+                <field name="category_name"/>
+                <field name="list_price"/>
+                <field name="standard_price"/>
+                <field name="uom_name"/>
+                <field name="o18_active"/>
+                <field name="promotion_state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_staging_product" model="ir.actions.act_window">
+        <field name="name">Staged Products (O18)</field>
+        <field name="res_model">pes.staging.product</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- =========== STAGING PAYMENTS =========== -->
+    <record id="view_staging_payment_tree" model="ir.ui.view">
+        <field name="name">pes.staging.payment.list</field>
+        <field name="model">pes.staging.payment</field>
+        <field name="arch" type="xml">
+            <list string="Staged Payments">
+                <field name="name"/>
+                <field name="payment_type"/>
+                <field name="partner_name"/>
+                <field name="payment_date"/>
+                <field name="amount" sum="Total"/>
+                <field name="journal_name"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_staging_payment" model="ir.actions.act_window">
+        <field name="name">Staged Payments (O18)</field>
+        <field name="res_model">pes.staging.payment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

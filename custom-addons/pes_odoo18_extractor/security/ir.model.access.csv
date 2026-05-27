@@ -1,0 +1,18 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_extraction_run_user,pes.extraction.run user,model_pes_extraction_run,account.group_account_user,1,0,0,0
+access_extraction_run_manager,pes.extraction.run manager,model_pes_extraction_run,account.group_account_manager,1,1,1,1
+access_staging_partner_user,pes.staging.partner user,model_pes_staging_partner,account.group_account_user,1,0,0,0
+access_staging_partner_manager,pes.staging.partner manager,model_pes_staging_partner,account.group_account_manager,1,1,1,1
+access_staging_product_user,pes.staging.product user,model_pes_staging_product,account.group_account_user,1,0,0,0
+access_staging_product_manager,pes.staging.product manager,model_pes_staging_product,account.group_account_manager,1,1,1,1
+access_staging_sale_order_user,pes.staging.sale.order user,model_pes_staging_sale_order,account.group_account_user,1,0,0,0
+access_staging_sale_order_manager,pes.staging.sale.order manager,model_pes_staging_sale_order,account.group_account_manager,1,1,1,1
+access_staging_sale_order_line_user,pes.staging.sale.order.line user,model_pes_staging_sale_order_line,account.group_account_user,1,0,0,0
+access_staging_sale_order_line_manager,pes.staging.sale.order.line manager,model_pes_staging_sale_order_line,account.group_account_manager,1,1,1,1
+access_staging_invoice_user,pes.staging.invoice user,model_pes_staging_invoice,account.group_account_user,1,0,0,0
+access_staging_invoice_manager,pes.staging.invoice manager,model_pes_staging_invoice,account.group_account_manager,1,1,1,1
+access_staging_invoice_line_user,pes.staging.invoice.line user,model_pes_staging_invoice_line,account.group_account_user,1,0,0,0
+access_staging_invoice_line_manager,pes.staging.invoice.line manager,model_pes_staging_invoice_line,account.group_account_manager,1,1,1,1
+access_staging_payment_user,pes.staging.payment user,model_pes_staging_payment,account.group_account_user,1,0,0,0
+access_staging_payment_manager,pes.staging.payment manager,model_pes_staging_payment,account.group_account_manager,1,1,1,1
+access_extractor_run_wizard_manager,pes.extractor.run.wizard manager,model_pes_extractor_run_wizard,account.group_account_manager,1,1,1,1

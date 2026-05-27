@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mercury_connect_wizard_form" model="ir.ui.view">
+        <field name="name">mercury.connect.wizard.form</field>
+        <field name="model">mercury.connect.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Connect Mercury">
+                <sheet>
+                    <field name="state" widget="statusbar" statusbar_visible="input,validated,done"/>
+                    <group invisible="state != 'input'">
+                        <field name="company_id" options="{'no_create': True}"/>
+                        <field name="workspace_label" placeholder="e.g. portlandia, big-sky"/>
+                        <field name="api_token" password="True" placeholder="Mercury read-only API token"/>
+                    </group>
+                    <group invisible="state == 'input'">
+                        <field name="discovered_account_count" readonly="1"/>
+                        <field name="link_id" readonly="1"/>
+                        <field name="message" readonly="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_validate_token" type="object" string="Validate &amp; Store" class="btn-primary" invisible="state != 'input'"/>
+                    <button name="action_create_link" type="object" string="Create Bank Link" class="btn-primary" invisible="state != 'validated'"/>
+                    <button special="cancel" string="Close" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mercury_connect_wizard" model="ir.actions.act_window">
+        <field name="name">Connect Mercury Workspace</field>
+        <field name="res_model">mercury.connect.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

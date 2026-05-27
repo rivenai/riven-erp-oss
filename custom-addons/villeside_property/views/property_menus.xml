@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_villeside_property_root"
+              name="Property Listings"
+              web_icon="villeside_property,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- Sub Menus -->
+    <menuitem id="menu_villeside_property_listings"
+              name="Listings"
+              parent="menu_villeside_property_root"
+              action="action_villeside_property"
+              sequence="10"/>
+
+    <menuitem id="menu_villeside_property_config"
+              name="Configuration"
+              parent="menu_villeside_property_root"
+              sequence="90"
+              groups="base.group_system"/>
+</odoo>

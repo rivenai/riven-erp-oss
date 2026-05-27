@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Villeside-branded portal header -->
+    <template id="villeside_portal_header" inherit_id="portal.portal_layout">
+        <xpath expr="//div[hasclass('o_portal_navbar')]" position="attributes">
+            <attribute name="style">background-color: #1B2A4A;</attribute>
+        </xpath>
+    </template>
+
+    <!-- Portal My Home - Real Estate Transactions section -->
+    <template id="villeside_portal_my_home" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/villeside_portal/static/src/img/house-icon.svg'"/>
+                <t t-set="title">My Real Estate Transactions</t>
+                <t t-set="url" t-value="'/my/transactions'"/>
+                <t t-set="text">View your active real estate transactions and documents.</t>
+            </t>
+        </xpath>
+    </template>
+</odoo>

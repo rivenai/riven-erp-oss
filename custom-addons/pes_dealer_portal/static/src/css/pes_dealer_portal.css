@@ -1,0 +1,38 @@
+/* PES Dealer Portal Branding */
+body {
+    background-color: #f5f6f7 !important;
+}
+
+/* Login Page Styling */
+.oe_login_form {
+    border: 1px solid #e0e4ea;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 2rem;
+    background: white;
+}
+
+.btn-primary {
+    background-color: #2db35d !important;
+    border-color: #2db35d !important;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: #229148 !important;
+    border-color: #229148 !important;
+}
+
+a {
+    color: #2db35d !important;
+}
+
+/* Sidebar styling */
+#o_portal_navbar {
+    background-color: #1a2332 !important;
+}
+
+.o_portal_sidebar {
+    background-color: white;
+    border-right: 1px solid #e0e4ea;
+}

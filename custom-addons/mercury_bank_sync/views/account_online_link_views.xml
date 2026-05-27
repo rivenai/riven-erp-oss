@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_online_link_form_mercury" model="ir.ui.view">
+        <field name="name">account.online.link.form.mercury</field>
+        <field name="model">account.online.link</field>
+        <field name="inherit_id" ref="account_online_synchronization.online_synchronization_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Mercury" invisible="not is_mercury">
+                    <field name="is_mercury" readonly="1"/>
+                    <field name="mercury_workspace_id"/>
+                    <field name="mercury_last_error" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_online_link_tree_mercury" model="ir.ui.view">
+        <field name="name">account.online.link.tree.mercury</field>
+        <field name="model">account.online.link</field>
+        <field name="inherit_id" ref="account_online_synchronization.online_synchronization_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="is_mercury" optional="show"/>
+                <field name="mercury_workspace_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

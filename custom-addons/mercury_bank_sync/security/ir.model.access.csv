@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mercury_connect_wizard_user,mercury.connect.wizard accountant,model_mercury_connect_wizard,account.group_account_user,1,1,1,1
+access_mercury_connect_wizard_manager,mercury.connect.wizard manager,model_mercury_connect_wizard,account.group_account_manager,1,1,1,1
+access_pes_principal_entity_user,pes.principal.entity user,model_pes_principal_entity,account.group_account_user,1,0,0,0
+access_pes_principal_entity_manager,pes.principal.entity manager,model_pes_principal_entity,account.group_account_manager,1,1,1,1
+access_pes_cost_center_user,pes.cost.center user,model_pes_cost_center,account.group_account_user,1,0,0,0
+access_pes_cost_center_manager,pes.cost.center manager,model_pes_cost_center,account.group_account_manager,1,1,1,1
+access_pes_revenue_track_user,pes.revenue.track user,model_pes_revenue_track,account.group_account_user,1,0,0,0
+access_pes_revenue_track_manager,pes.revenue.track manager,model_pes_revenue_track,account.group_account_manager,1,1,1,1
+access_pes_dimension_rule_user,pes.dimension.rule user,model_pes_dimension_rule,account.group_account_user,1,0,0,0
+access_pes_dimension_rule_manager,pes.dimension.rule manager,model_pes_dimension_rule,account.group_account_manager,1,1,1,1

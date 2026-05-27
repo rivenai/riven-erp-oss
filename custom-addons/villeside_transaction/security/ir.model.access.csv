@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_villeside_transaction_user,villeside.transaction.user,model_villeside_transaction,base.group_user,1,0,0,0
+access_villeside_transaction_agent,villeside.transaction.agent,model_villeside_transaction,sales_team.group_sale_salesman,1,1,1,0
+access_villeside_transaction_manager,villeside.transaction.manager,model_villeside_transaction,sales_team.group_sale_manager,1,1,1,1
+access_villeside_transaction_checklist_user,villeside.transaction.checklist.user,model_villeside_transaction_checklist,base.group_user,1,0,0,0
+access_villeside_transaction_checklist_agent,villeside.transaction.checklist.agent,model_villeside_transaction_checklist,sales_team.group_sale_salesman,1,1,1,0
+access_villeside_transaction_checklist_manager,villeside.transaction.checklist.manager,model_villeside_transaction_checklist,sales_team.group_sale_manager,1,1,1,1

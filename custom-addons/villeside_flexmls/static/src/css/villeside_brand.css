@@ -1,0 +1,74 @@
+/* Villeside Realty LLC - Brand Stylesheet */
+/* Navy Blue: #1B2A4A  |  Gold: #C9A84C  |  Light: #F5F3EE */
+
+:root {
+    --villeside-navy: #1B2A4A;
+    --villeside-gold: #C9A84C;
+    --villeside-light: #F5F3EE;
+    --villeside-dark: #0F1A2E;
+    --villeside-gray: #6B7280;
+}
+
+/* Primary button overrides */
+.btn-primary {
+    background-color: var(--villeside-navy) !important;
+    border-color: var(--villeside-navy) !important;
+}
+.btn-primary:hover {
+    background-color: var(--villeside-dark) !important;
+    border-color: var(--villeside-dark) !important;
+}
+
+/* Secondary / outline buttons */
+.btn-secondary,
+.btn-outline-primary {
+    color: var(--villeside-navy) !important;
+    border-color: var(--villeside-navy) !important;
+}
+.btn-secondary:hover,
+.btn-outline-primary:hover {
+    background-color: var(--villeside-navy) !important;
+    color: #fff !important;
+}
+
+/* Navbar / header */
+header .navbar {
+    border-bottom: 2px solid var(--villeside-gold);
+}
+
+/* Gold accent for headings */
+h1, h2, h3 {
+    color: var(--villeside-navy);
+}
+
+/* Footer styling */
+footer {
+    background-color: var(--villeside-navy) !important;
+    color: #fff;
+}
+footer a {
+    color: var(--villeside-gold) !important;
+}
+footer h5, footer .h5 {
+    color: var(--villeside-gold) !important;
+}
+
+/* Listing cards */
+.s_listing_card .card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    transition: box-shadow 0.2s;
+}
+.s_listing_card .card:hover {
+    box-shadow: 0 4px 16px rgba(27, 42, 74, 0.12);
+}
+
+/* Gold underline on service titles */
+.service-title::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: var(--villeside-gold);
+    margin-top: 8px;
+}

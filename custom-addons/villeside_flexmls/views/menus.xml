@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top-level FlexMLS Menu -->
+    <menuitem id="menu_flexmls_root"
+              name="FlexMLS"
+              web_icon="villeside_flexmls,static/description/icon.png"
+              sequence="50"/>
+
+    <!-- Listings Submenu -->
+    <menuitem id="menu_flexmls_listings"
+              name="Listings"
+              parent="menu_flexmls_root"
+              action="action_flexmls_listing"
+              sequence="10"/>
+
+    <!-- Configuration Submenu -->
+    <menuitem id="menu_flexmls_config_parent"
+              name="Configuration"
+              parent="menu_flexmls_root"
+              sequence="90"/>
+
+    <menuitem id="menu_flexmls_config"
+              name="FlexMLS Settings"
+              parent="menu_flexmls_config_parent"
+              action="action_flexmls_config"
+              sequence="10"/>
+</odoo>

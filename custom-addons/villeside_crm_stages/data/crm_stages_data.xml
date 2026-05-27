@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Villeside Realty Company Record -->
+        <record id="company_villeside" model="res.company">
+            <field name="name">Villeside Realty LLC</field>
+        </record>
+
+        <!-- ==================== RESIDENTIAL BUYER PIPELINE ==================== -->
+        <record id="stage_res_buyer_new" model="crm.stage">
+            <field name="name">New Lead</field>
+            <field name="sequence">1</field>
+            <field name="probability">5</field>
+            <field name="pipeline_type">residential_buyer</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Inquiry received. Source: web/referral/open house. Assign to agent.</field>
+        </record>
+        <record id="stage_res_buyer_qualified" model="crm.stage">
+            <field name="name">Qualified</field>
+            <field name="sequence">2</field>
+            <field name="probability">15</field>
+            <field name="pipeline_type">residential_buyer</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Pre-approval letter on file. Budget, timeline, and area confirmed.</field>
+        </record>
+        <record id="stage_res_buyer_showing" model="crm.stage">
+            <field name="name">Showing Scheduled</field>
+            <field name="sequence">3</field>
+            <field name="probability">25</field>
+            <field name="pipeline_type">residential_buyer</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_res_buyer_offer" model="crm.stage">
+            <field name="name">Offer Submitted</field>
+            <field name="sequence">4</field>
+            <field name="probability">40</field>
+            <field name="pipeline_type">residential_buyer</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Purchase contract sent. Earnest money ready.</field>
+        </record>
+        <record id="stage_res_buyer_contract" model="crm.stage">
+            <field name="name">Under Contract</field>
+            <field name="sequence">5</field>
+            <field name="probability">60</field>
+            <field name="pipeline_type">residential_buyer</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Offer accepted. Earnest money deposited with Borders &amp; Borders.</field>
+        </record>
+        <record id="stage_res_buyer_inspection" model="crm.stage">
+            <field name="name">Inspection Period</field>
+            <field name="sequence">6</field>
+            <field name="probability">70</field>
+            <field name="pipeline_type">residential_buyer</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Home inspection ordered. Results reviewed. Negotiate repairs or credit.</field>
+        </record>
+        <record id="stage_res_buyer_appraisal" model="crm.stage">
+            <field name="name">Appraisal</field>
+            <field name="sequence">7</field>
+            <field name="probability">80</field>
+            <field name="pipeline_type">residential_buyer</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_res_buyer_ctc" model="crm.stage">
+            <field name="name">Clear to Close</field>
+            <field name="sequence">8</field>
+            <field name="probability">90</field>
+            <field name="pipeline_type">residential_buyer</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">All conditions met. Final walkthrough complete. CD issued.</field>
+        </record>
+        <record id="stage_res_buyer_won" model="crm.stage">
+            <field name="name">Closed - Won</field>
+            <field name="sequence">9</field>
+            <field name="probability">100</field>
+            <field name="is_won">True</field>
+            <field name="pipeline_type">residential_buyer</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+
+        <!-- ==================== RESIDENTIAL SELLER PIPELINE ==================== -->
+        <record id="stage_res_seller_lead" model="crm.stage">
+            <field name="name">Seller Inquiry</field>
+            <field name="sequence">10</field>
+            <field name="probability">5</field>
+            <field name="pipeline_type">residential_seller</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_res_seller_presentation" model="crm.stage">
+            <field name="name">Listing Presentation</field>
+            <field name="sequence">11</field>
+            <field name="probability">15</field>
+            <field name="pipeline_type">residential_seller</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">CMA prepared. Presentation delivered. Listing agreement ready to sign.</field>
+        </record>
+        <record id="stage_res_seller_agreement" model="crm.stage">
+            <field name="name">Listing Agreement Signed</field>
+            <field name="sequence">12</field>
+            <field name="probability">25</field>
+            <field name="pipeline_type">residential_seller</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Exclusive right to sell executed. MLS data entry in progress.</field>
+        </record>
+        <record id="stage_res_seller_prep" model="crm.stage">
+            <field name="name">Pre-Market Prep</field>
+            <field name="sequence">13</field>
+            <field name="probability">35</field>
+            <field name="pipeline_type">residential_seller</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Photography done. Staging complete. MLS entry live or pending.</field>
+        </record>
+        <record id="stage_res_seller_active" model="crm.stage">
+            <field name="name">Active on Market</field>
+            <field name="sequence">14</field>
+            <field name="probability">50</field>
+            <field name="pipeline_type">residential_seller</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_res_seller_offer_review" model="crm.stage">
+            <field name="name">Offer Review</field>
+            <field name="sequence">15</field>
+            <field name="probability">60</field>
+            <field name="pipeline_type">residential_seller</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Offers received. Present all offers to seller within 24 hours.</field>
+        </record>
+        <record id="stage_res_seller_contract" model="crm.stage">
+            <field name="name">Under Contract (Listing)</field>
+            <field name="sequence">16</field>
+            <field name="probability">75</field>
+            <field name="pipeline_type">residential_seller</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_res_seller_ctc" model="crm.stage">
+            <field name="name">Clear to Close (Listing)</field>
+            <field name="sequence">17</field>
+            <field name="probability">95</field>
+            <field name="pipeline_type">residential_seller</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_res_seller_won" model="crm.stage">
+            <field name="name">Closed - Won (Listing)</field>
+            <field name="sequence">18</field>
+            <field name="probability">100</field>
+            <field name="is_won">True</field>
+            <field name="pipeline_type">residential_seller</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+
+        <!-- ==================== COMMERCIAL (CRE) PIPELINE ==================== -->
+        <record id="stage_cre_prospecting" model="crm.stage">
+            <field name="name">CRE - Prospecting</field>
+            <field name="sequence">20</field>
+            <field name="probability">5</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_cre_qualified" model="crm.stage">
+            <field name="name">CRE - Qualified</field>
+            <field name="sequence">21</field>
+            <field name="probability">10</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Ownership verified. Motivation, timeline, and pricing expectations confirmed.</field>
+        </record>
+        <record id="stage_cre_bov" model="crm.stage">
+            <field name="name">BOV / Proposal</field>
+            <field name="sequence">22</field>
+            <field name="probability">20</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Broker Opinion of Value delivered to client.</field>
+        </record>
+        <record id="stage_cre_engagement" model="crm.stage">
+            <field name="name">Listing / Engagement Signed</field>
+            <field name="sequence">23</field>
+            <field name="probability">30</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_cre_marketing" model="crm.stage">
+            <field name="name">Marketing / DD</field>
+            <field name="sequence">24</field>
+            <field name="probability">45</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">OM created. Property marketed. Buyer DD underway if applicable.</field>
+        </record>
+        <record id="stage_cre_loi" model="crm.stage">
+            <field name="name">LOI / Offer</field>
+            <field name="sequence">25</field>
+            <field name="probability">55</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_cre_contract" model="crm.stage">
+            <field name="name">CRE - Under Contract</field>
+            <field name="sequence">26</field>
+            <field name="probability">65</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">PSA executed. Phase I/environmental ordered if applicable.</field>
+        </record>
+        <record id="stage_cre_dd" model="crm.stage">
+            <field name="name">CRE - Due Diligence</field>
+            <field name="sequence">27</field>
+            <field name="probability">75</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Environmental (Phase I/II), zoning, tenant audit, survey complete.</field>
+        </record>
+        <record id="stage_cre_financing" model="crm.stage">
+            <field name="name">CRE - Financing / Appraisal</field>
+            <field name="sequence">28</field>
+            <field name="probability">85</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_cre_ctc" model="crm.stage">
+            <field name="name">CRE - Clear to Close</field>
+            <field name="sequence">29</field>
+            <field name="probability">95</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_cre_won" model="crm.stage">
+            <field name="name">CRE - Closed Won</field>
+            <field name="sequence">30</field>
+            <field name="probability">100</field>
+            <field name="is_won">True</field>
+            <field name="pipeline_type">commercial</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+
+        <!-- ==================== PROPERTY MANAGEMENT PIPELINE ==================== -->
+        <record id="stage_pm_inquiry" model="crm.stage">
+            <field name="name">PM - Prospect Inquiry</field>
+            <field name="sequence">40</field>
+            <field name="probability">5</field>
+            <field name="pipeline_type">property_mgmt</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_pm_proposal" model="crm.stage">
+            <field name="name">PM - Proposal</field>
+            <field name="sequence">41</field>
+            <field name="probability">20</field>
+            <field name="pipeline_type">property_mgmt</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Fee structure and management scope presented to owner.</field>
+        </record>
+        <record id="stage_pm_signed" model="crm.stage">
+            <field name="name">PM - Agreement Signed</field>
+            <field name="sequence">42</field>
+            <field name="probability">50</field>
+            <field name="pipeline_type">property_mgmt</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+        <record id="stage_pm_onboarding" model="crm.stage">
+            <field name="name">PM - Onboarding</field>
+            <field name="sequence">43</field>
+            <field name="probability">75</field>
+            <field name="pipeline_type">property_mgmt</field>
+            <field name="company_id" ref="company_villeside"/>
+            <field name="requirements">Keys, property info, tenant records, and banking info collected.</field>
+        </record>
+        <record id="stage_pm_active" model="crm.stage">
+            <field name="name">PM - Active Management</field>
+            <field name="sequence">44</field>
+            <field name="probability">100</field>
+            <field name="is_won">True</field>
+            <field name="pipeline_type">property_mgmt</field>
+            <field name="company_id" ref="company_villeside"/>
+        </record>
+
+    </data>
+</odoo>

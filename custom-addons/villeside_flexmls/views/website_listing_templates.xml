@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Listings Index Page -->
+    <template id="listings_index" name="Property Listings">
+        <t t-call="website.layout">
+            <div id="wrap" class="container mt-4">
+                <h1 class="text-center mb-4">Louisville Property Listings</h1>
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <form id="listing-search-form" class="row g-3">
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="search" placeholder="Search by address, MLS ID..." t-att-value="search or ''"/>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select" name="property_type">
+                                    <option value="">All Types</option>
+                                    <option value="residential">Residential</option>
+                                    <option value="commercial">Commercial</option>
+                                    <option value="condo">Condo</option>
+                                    <option value="land">Land</option>
+                                    <option value="multi_family">Multi-Family</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control" name="min_price" placeholder="Min Price"/>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="number" class="form-control" name="max_price" placeholder="Max Price"/>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select" name="bedrooms">
+                                    <option value="">Beds</option>
+                                    <option value="1">1+</option>
+                                    <option value="2">2+</option>
+                                    <option value="3">3+</option>
+                                    <option value="4">4+</option>
+                                    <option value="5">5+</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" class="btn btn-primary w-100">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row" id="listings-grid">
+                    <t t-foreach="listings" t-as="listing">
+                        <div class="col-md-4 mb-4">
+                            <div class="card listing-card h-100">
+                                <t t-if="listing.primary_photo_url">
+                                    <img t-att-src="listing.primary_photo_url" class="card-img-top" alt="Property Photo" style="height:220px;object-fit:cover;"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height:220px;">
+                                        <span class="text-white">No Photo</span>
+                                    </div>
+                                </t>
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <h5 class="card-title text-primary mb-1">
+                                            $<t t-esc="'{:,.0f}'.format(listing.list_price)"/>
+                                        </h5>
+                                        <span class="badge bg-success" t-if="listing.mls_status == 'active'">Active</span>
+                                        <span class="badge bg-warning" t-if="listing.mls_status == 'pending'">Pending</span>
+                                    </div>
+                                    <p class="card-text mb-1"><t t-esc="listing.street_address"/>, <t t-esc="listing.city"/>, <t t-esc="listing.state"/> <t t-esc="listing.zip_code"/></p>
+                                    <p class="card-text text-muted">
+                                        <t t-esc="listing.bedrooms"/> bd | <t t-esc="listing.bathrooms_full"/> ba | <t t-esc="listing.sqft"/> sqft
+                                    </p>
+                                    <a t-attf-href="/listings/#{listing.id}" class="btn btn-outline-primary btn-sm">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <t t-if="not listings">
+                    <div class="text-center py-5">
+                        <h3>No listings found</h3>
+                        <p>Try adjusting your search criteria.</p>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <!-- Listing Detail Page -->
+    <template id="listing_detail" name="Listing Detail">
+        <t t-call="website.layout">
+            <div id="wrap" class="container mt-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/listings">Listings</a></li>
+                        <li class="breadcrumb-item active" t-esc="listing.name"/>
+                    </ol>
+                </nav>
+                <div class="row">
+                    <div class="col-md-8">
+                        <t t-if="listing.primary_photo_url">
+                            <img t-att-src="listing.primary_photo_url" class="img-fluid rounded mb-3" alt="Property"/>
+                        </t>
+                        <h2 t-esc="listing.name"/>
+                        <p class="lead">
+                            <t t-esc="listing.street_address"/>, <t t-esc="listing.city"/>, <t t-esc="listing.state"/> <t t-esc="listing.zip_code"/>
+                        </p>
+                        <h3 class="text-primary">$<t t-esc="'{:,.0f}'.format(listing.list_price)"/></h3>
+                        <hr/>
+                        <h4>Description</h4>
+                        <p t-esc="listing.description"/>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Property Details</h5>
+                                <table class="table table-sm">
+                                    <tr><td>MLS ID</td><td t-esc="listing.mls_id"/></tr>
+                                    <tr><td>Status</td><td t-esc="listing.mls_status"/></tr>
+                                    <tr><td>Property Type</td><td t-esc="listing.property_type"/></tr>
+                                    <tr><td>Bedrooms</td><td t-esc="listing.bedrooms"/></tr>
+                                    <tr><td>Bathrooms</td><td><t t-esc="listing.bathrooms_full"/> full, <t t-esc="listing.bathrooms_half"/> half</td></tr>
+                                    <tr><td>Sq Ft</td><td t-esc="listing.sqft"/></tr>
+                                    <tr><td>Lot Size</td><td><t t-esc="listing.lot_size"/> acres</td></tr>
+                                    <tr><td>Year Built</td><td t-esc="listing.year_built"/></tr>
+                                    <tr><td>Price/SqFt</td><td>$<t t-esc="'{:,.0f}'.format(listing.price_per_sqft)"/></td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card mt-3" t-if="listing.listing_agent_name">
+                            <div class="card-body">
+                                <h5 class="card-title">Listing Agent</h5>
+                                <p t-esc="listing.listing_agent_name"/>
+                                <p t-if="listing.listing_agent_phone" t-esc="listing.listing_agent_phone"/>
+                                <p t-if="listing.listing_office" t-esc="listing.listing_office"/>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="/contact" class="btn btn-primary w-100">Schedule a Showing</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

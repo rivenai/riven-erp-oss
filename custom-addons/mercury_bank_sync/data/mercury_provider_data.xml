@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ir.config_parameter defaults. The Key Vault URL must be set per
+             environment by an Azure-aware admin; we only seed the key. -->
+        <record id="param_mercury_key_vault_url" model="ir.config_parameter">
+            <field name="key">mercury_bank_sync.key_vault_url</field>
+            <field name="value">https://pes-odoo-keyvault.vault.azure.net/</field>
+        </record>
+        <record id="param_mercury_api_base" model="ir.config_parameter">
+            <field name="key">mercury_bank_sync.api_base</field>
+            <field name="value">https://api.mercury.com/api/v1</field>
+        </record>
+        <record id="param_mercury_webhook_host" model="ir.config_parameter">
+            <field name="key">mercury_bank_sync.webhook_host</field>
+            <field name="value">mercury-webhook.cassilly.capital</field>
+        </record>
+    </data>
+</odoo>

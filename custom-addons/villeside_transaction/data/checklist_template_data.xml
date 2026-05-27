@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- KY GLAR Purchase Compliance Checklist Templates -->
+    <!-- These are reference items; actual checklist items are created per-transaction -->
+    
+    <!-- Note: checklist_template is a concept - actual items created via transaction actions -->
+    <!-- Contract Documents -->
+    <!-- Disclosure Documents -->
+    <!-- Inspection Items -->
+    <!-- Financing Items -->
+    <!-- Title & Closing Items -->
+    <!-- This file serves as documentation for the standard KY/GLAR checklist -->
+    <!-- Actual implementation creates checklist items dynamically on transaction creation -->
+</odoo>

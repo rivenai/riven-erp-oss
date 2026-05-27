@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Config Form View -->
+    <record id="view_flexmls_config_form" model="ir.ui.view">
+        <field name="name">flexmls.config.form</field>
+        <field name="model">flexmls.config</field>
+        <field name="arch" type="xml">
+            <form string="FlexMLS Configuration">
+                <sheet>
+                    <group>
+                        <group string="General">
+                            <field name="name"/>
+                            <field name="active"/>
+                            <field name="mls_id"/>
+                        </group>
+                        <group string="API Credentials">
+                            <field name="api_key" password="True"/>
+                            <field name="api_secret" password="True"/>
+                            <field name="access_token" password="True"/>
+                            <field name="api_base_url"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Sync Settings">
+                            <field name="sync_interval"/>
+                            <field name="last_sync"/>
+                            <field name="auto_publish"/>
+                        </group>
+                        <group string="Filters">
+                            <field name="default_property_types"/>
+                            <field name="geo_filter"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Config Tree View -->
+    <record id="view_flexmls_config_tree" model="ir.ui.view">
+        <field name="name">flexmls.config.tree</field>
+        <field name="model">flexmls.config</field>
+        <field name="arch" type="xml">
+            <tree string="FlexMLS Configurations">
+                <field name="name"/>
+                <field name="mls_id"/>
+                <field name="active"/>
+                <field name="last_sync"/>
+                <field name="sync_interval"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Config Action -->
+    <record id="action_flexmls_config" model="ir.actions.act_window">
+        <field name="name">FlexMLS Configuration</field>
+        <field name="res_model">flexmls.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

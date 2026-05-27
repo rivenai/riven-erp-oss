@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- =========================================================
+         PRINCIPAL ENTITIES — current SEZ Migration Phase 1 state
+         ========================================================= -->
+    <record id="principal_pes_supply" model="pes.principal.entity">
+        <field name="name">PES Supply LLC</field>
+        <field name="code">pes-supply</field>
+        <field name="sequence">10</field>
+        <field name="jurisdiction">us</field>
+        <field name="sez_status" eval="False"/>
+        <field name="notes">Phase 1 principal: holds 229 manufacturer relationships,
+            $300K+ vendor credit, all 15 Mercury accounts. Migrates to agent role
+            in Phase 2 (50/50) and pure US sales in Phase 3 (5% margin).</field>
+    </record>
+
+    <record id="principal_pes_global_india_hp" model="pes.principal.entity">
+        <field name="name">PES Global India HP (SEZ)</field>
+        <field name="code">pes-global-india-hp</field>
+        <field name="sequence">20</field>
+        <field name="jurisdiction">in_sez</field>
+        <field name="sez_status" eval="True"/>
+        <field name="notes">Phase 1: receives 8% commission via inter-company billing.
+            Phase 3 (2027-29): full principal — direct manufacturer accounts,
+            ~20% retained margin at 0% SEZ tax.</field>
+    </record>
+
+    <record id="principal_pes_global_uae" model="pes.principal.entity">
+        <field name="name">PES Global UAE (RAKEZ)</field>
+        <field name="code">pes-global-uae-rakez</field>
+        <field name="sequence">30</field>
+        <field name="jurisdiction">ae_rakez</field>
+        <field name="sez_status" eval="True"/>
+        <field name="notes">Phase 4 (2029+) permanent principal. RAKEZ Free Zone,
+            0% tax, 50-year license, $4,500 setup. Not yet established.</field>
+    </record>
+
+    <record id="principal_pes_global_group" model="pes.principal.entity">
+        <field name="name">PES Global Group LLC</field>
+        <field name="code">pes-global-group</field>
+        <field name="sequence">40</field>
+        <field name="jurisdiction">us</field>
+        <field name="sez_status" eval="False"/>
+        <field name="notes">US holding for PES Global brand, separate from PES Supply.</field>
+    </record>
+
+    <record id="principal_bsd_llc" model="pes.principal.entity">
+        <field name="name">BSD LLC (Big Sky Dynamics)</field>
+        <field name="code">bsd-llc</field>
+        <field name="sequence">50</field>
+        <field name="jurisdiction">us</field>
+        <field name="sez_status" eval="False"/>
+        <field name="notes">Big Sky Dynamics — managed materials specialty, Track 3.
+            Mercury org "Applying" status.</field>
+    </record>
+
+    <record id="principal_portlandia_logistics" model="pes.principal.entity">
+        <field name="name">Portlandia Logistics</field>
+        <field name="code">portlandia-logistics</field>
+        <field name="sequence">60</field>
+        <field name="jurisdiction">us</field>
+        <field name="sez_status" eval="False"/>
+        <field name="notes">Logistics + last-mile arm.</field>
+    </record>
+
+    <record id="principal_dynamic_distribution" model="pes.principal.entity">
+        <field name="name">Dynamic Distribution Solutions</field>
+        <field name="code">dynamic-distribution</field>
+        <field name="sequence">70</field>
+        <field name="jurisdiction">us</field>
+        <field name="sez_status" eval="False"/>
+    </record>
+
+    <record id="principal_str_capital" model="pes.principal.entity">
+        <field name="name">STR Capital LLC</field>
+        <field name="code">str-capital</field>
+        <field name="sequence">80</field>
+        <field name="jurisdiction">us</field>
+        <field name="sez_status" eval="False"/>
+        <field name="notes">Real estate / lease-back vehicle. Track 7 income source.</field>
+    </record>
+
+    <record id="principal_cassilly_capital" model="pes.principal.entity">
+        <field name="name">Cassilly Capital LLC</field>
+        <field name="code">cassilly-capital</field>
+        <field name="sequence">90</field>
+        <field name="jurisdiction">us</field>
+        <field name="sez_status" eval="False"/>
+        <field name="notes">Top-of-house holding entity.</field>
+    </record>
+
+    <!-- =========================================================
+         COST CENTERS — operational geography
+         ========================================================= -->
+    <record id="cc_us_ops" model="pes.cost.center">
+        <field name="name">US Operations</field>
+        <field name="code">cc-us-ops</field>
+        <field name="region">us</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="cc_india_kangra" model="pes.cost.center">
+        <field name="name">India SEZ — Kangra (Sales Hub)</field>
+        <field name="code">cc-in-kangra</field>
+        <field name="region">in_kangra</field>
+        <field name="sequence">20</field>
+        <field name="notes">Amit's Global Sales Hub. Track 1 origin point.</field>
+    </record>
+
+    <record id="cc_india_lucknow" model="pes.cost.center">
+        <field name="name">India SEZ — Lucknow</field>
+        <field name="code">cc-in-lucknow</field>
+        <field name="region">in_lucknow</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="cc_pakistan" model="pes.cost.center">
+        <field name="name">Pakistan</field>
+        <field name="code">cc-pk</field>
+        <field name="region">pk</field>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="cc_bangladesh" model="pes.cost.center">
+        <field name="name">Bangladesh</field>
+        <field name="code">cc-bd</field>
+        <field name="region">bd</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="cc_uae" model="pes.cost.center">
+        <field name="name">UAE (RAKEZ)</field>
+        <field name="code">cc-ae</field>
+        <field name="region">ae</field>
+        <field name="sequence">60</field>
+    </record>
+
+    <record id="cc_unallocated" model="pes.cost.center">
+        <field name="name">Unallocated / Global</field>
+        <field name="code">cc-global</field>
+        <field name="region">global</field>
+        <field name="sequence">999</field>
+        <field name="notes">Default catch-all when auto-tagging cannot determine
+            geography. Should trend to zero as rules mature.</field>
+    </record>
+
+    <!-- =========================================================
+         REVENUE TRACKS — canonical 7-track operating model
+         ========================================================= -->
+    <record id="track_1_global_sales_hub" model="pes.revenue.track">
+        <field name="name">1. Amit's Global Sales Hub</field>
+        <field name="code">track-1-sales-hub</field>
+        <field name="track_number">1</field>
+        <field name="description">Outbound sales originated from Kangra. Highest-margin
+            principal channel under SEZ migration.</field>
+    </record>
+
+    <record id="track_2_external_partners" model="pes.revenue.track">
+        <field name="name">2. External Partners</field>
+        <field name="code">track-2-external</field>
+        <field name="track_number">2</field>
+        <field name="description">Apollo.io-sourced and brokered deals. Lower margin,
+            higher volume.</field>
+    </record>
+
+    <record id="track_3_bsdyno_shi" model="pes.revenue.track">
+        <field name="name">3. BSDyno SHI (Specialty)</field>
+        <field name="code">track-3-bsdyno</field>
+        <field name="track_number">3</field>
+        <field name="description">Big Sky Dynamics managed materials specialty.</field>
+    </record>
+
+    <record id="track_4_managed_materials" model="pes.revenue.track">
+        <field name="name">4. Managed Materials</field>
+        <field name="code">track-4-managed</field>
+        <field name="track_number">4</field>
+        <field name="description">Long-tail SKU fulfillment via waterfall.</field>
+    </record>
+
+    <record id="track_5_gmb_seo" model="pes.revenue.track">
+        <field name="name">5. GMB / SEO</field>
+        <field name="code">track-5-gmb-seo</field>
+        <field name="track_number">5</field>
+        <field name="description">Organic inbound through Google My Business + content.</field>
+    </record>
+
+    <record id="track_6_intercompany" model="pes.revenue.track">
+        <field name="name">6. Inter-Company Billing</field>
+        <field name="code">track-6-intercompany</field>
+        <field name="track_number">6</field>
+        <field name="description">PES Supply ↔ PES Global India 8% commission flow.
+            Pattern lock-in for SEZ Phase 2/3 transition.</field>
+    </record>
+
+    <record id="track_7_str_lease_back" model="pes.revenue.track">
+        <field name="name">7. STR Capital Lease-Back</field>
+        <field name="code">track-7-str-leaseback</field>
+        <field name="track_number">7</field>
+        <field name="description">Real estate lease-back income from STR Capital.</field>
+    </record>
+
+    <!-- =========================================================
+         AUTO-TAG RULES — starter set, ordered by specificity
+         ========================================================= -->
+
+    <!-- Stripe payouts → US Ops, External Partners, PES Supply -->
+    <record id="rule_stripe_payouts" model="pes.dimension.rule">
+        <field name="name">Stripe Payouts → External Partners (US Ops)</field>
+        <field name="sequence">10</field>
+        <field name="counterparty_regex">(?i)stripe</field>
+        <field name="principal_entity_id" ref="principal_pes_supply"/>
+        <field name="cost_center_id" ref="cc_us_ops"/>
+        <field name="revenue_track_id" ref="track_2_external_partners"/>
+    </record>
+
+    <!-- Inter-company commission to PES Global India HP -->
+    <record id="rule_intercompany_india" model="pes.dimension.rule">
+        <field name="name">Inter-Company Commission → PES Global India HP</field>
+        <field name="sequence">20</field>
+        <field name="mercury_memo_regex">(?i)(intercompany|inter[-\s]?co|commission|sez|kangra|lucknow)</field>
+        <field name="principal_entity_id" ref="principal_pes_global_india_hp"/>
+        <field name="cost_center_id" ref="cc_india_kangra"/>
+        <field name="revenue_track_id" ref="track_6_intercompany"/>
+    </record>
+
+    <!-- Contractor payments — Amit -->
+    <record id="rule_payroll_amit" model="pes.dimension.rule">
+        <field name="name">Payroll: Amit Pathania → India SEZ Kangra</field>
+        <field name="sequence">30</field>
+        <field name="counterparty_regex">(?i)(amit|pathania)</field>
+        <field name="principal_entity_id" ref="principal_pes_supply"/>
+        <field name="cost_center_id" ref="cc_india_kangra"/>
+    </record>
+
+    <!-- Contractor payments — Balendra -->
+    <record id="rule_payroll_balendra" model="pes.dimension.rule">
+        <field name="name">Payroll: Balendra → India SEZ</field>
+        <field name="sequence">31</field>
+        <field name="counterparty_regex">(?i)balendra</field>
+        <field name="principal_entity_id" ref="principal_pes_supply"/>
+        <field name="cost_center_id" ref="cc_india_lucknow"/>
+    </record>
+
+    <!-- Contractor payments — Tanya -->
+    <record id="rule_payroll_tanya" model="pes.dimension.rule">
+        <field name="name">Payroll: Tanya → US Ops</field>
+        <field name="sequence">32</field>
+        <field name="counterparty_regex">(?i)tanya</field>
+        <field name="principal_entity_id" ref="principal_pes_supply"/>
+        <field name="cost_center_id" ref="cc_us_ops"/>
+    </record>
+
+    <!-- Contractor payments — Casey -->
+    <record id="rule_payroll_casey" model="pes.dimension.rule">
+        <field name="name">Payroll: Casey (variable Cash App) → US Ops</field>
+        <field name="sequence">33</field>
+        <field name="counterparty_regex">(?i)(casey|cash\s?app)</field>
+        <field name="principal_entity_id" ref="principal_pes_supply"/>
+        <field name="cost_center_id" ref="cc_us_ops"/>
+    </record>
+
+    <!-- Upwork fees (Amit's $35) -->
+    <record id="rule_upwork" model="pes.dimension.rule">
+        <field name="name">Upwork Fees → US Ops (Sales Hub overhead)</field>
+        <field name="sequence">35</field>
+        <field name="counterparty_regex">(?i)upwork</field>
+        <field name="principal_entity_id" ref="principal_pes_supply"/>
+        <field name="cost_center_id" ref="cc_us_ops"/>
+    </record>
+
+    <!-- BSDyno / Big Sky -->
+    <record id="rule_bsdyno" model="pes.dimension.rule">
+        <field name="name">BSDyno / Big Sky → BSD LLC</field>
+        <field name="sequence">40</field>
+        <field name="counterparty_regex">(?i)(bsdyno|big\s?sky\s?dynamics|bsd)</field>
+        <field name="principal_entity_id" ref="principal_bsd_llc"/>
+        <field name="cost_center_id" ref="cc_us_ops"/>
+        <field name="revenue_track_id" ref="track_3_bsdyno_shi"/>
+    </record>
+
+    <!-- STR Capital lease-back -->
+    <record id="rule_str_capital" model="pes.dimension.rule">
+        <field name="name">STR Capital → Lease-Back Track</field>
+        <field name="sequence">50</field>
+        <field name="counterparty_regex">(?i)str\s?capital</field>
+        <field name="principal_entity_id" ref="principal_str_capital"/>
+        <field name="cost_center_id" ref="cc_us_ops"/>
+        <field name="revenue_track_id" ref="track_7_str_lease_back"/>
+    </record>
+
+    <!-- Mercury IO / Credit Card → infrastructure overhead, US Ops -->
+    <record id="rule_mercury_io_credit" model="pes.dimension.rule">
+        <field name="name">Mercury IO Credit Card → US Ops Overhead</field>
+        <field name="sequence">60</field>
+        <field name="mercury_account_kind">IOAccount</field>
+        <field name="principal_entity_id" ref="principal_pes_supply"/>
+        <field name="cost_center_id" ref="cc_us_ops"/>
+    </record>
+
+    <!-- DEFAULT CATCH-ALL — lowest priority. Tag everything as PES Supply / US Ops -->
+    <!-- so reports never hit NULL. Should trend to <5% as specific rules grow.  -->
+    <record id="rule_default_catchall" model="pes.dimension.rule">
+        <field name="name">Default: PES Supply / US Ops / Unallocated</field>
+        <field name="sequence">9999</field>
+        <field name="principal_entity_id" ref="principal_pes_supply"/>
+        <field name="cost_center_id" ref="cc_unallocated"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pes_login_layout" inherit_id="web.login_layout" name="PES Login Layout">
+        <xpath expr="//div[hasclass('card')]" position="attributes">
+            <attribute name="class" add="pes_login_card" separator=" "/>
+        </xpath>
+        <xpath expr="//div[hasclass('card-body')]" position="before">
+            <div class="text-center mb-4">
+                <h3 class="font-weight-bold" style="color: #1a2332;">PES Dealer Portal</h3>
+                <p class="text-muted small">Power. Electric. Solar. Supply.</p>
+            </div>
+        </xpath>
+    </template>
+</odoo>

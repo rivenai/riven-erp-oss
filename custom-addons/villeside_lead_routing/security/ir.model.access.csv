@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lead_routing_rule_user,villeside.lead.routing.rule.user,model_villeside_lead_routing_rule,base.group_user,1,0,0,0
+access_lead_routing_rule_manager,villeside.lead.routing.rule.manager,model_villeside_lead_routing_rule,base.group_system,1,1,1,1
+access_lead_speed_tracker_user,villeside.lead.speed.tracker.user,model_villeside_lead_speed_tracker,base.group_user,1,0,0,0
+access_lead_speed_tracker_manager,villeside.lead.speed.tracker.manager,model_villeside_lead_speed_tracker,base.group_system,1,1,1,1

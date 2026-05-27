@@ -1,0 +1,15 @@
+{
+    'name': 'Villeside Drip Campaigns',
+    'version': '19.0.1.0.0',
+    'category': 'Marketing',
+    'summary': 'Automated drip email/SMS campaigns for real estate leads',
+    'description': 'Multi-step drip campaigns with queue processing, conditional sends, and auto-enrollment.',
+    'author': 'Villeside Realty / Cassilly Capital',
+    'website': 'https://villesiderealty.com',
+    'depends': ['crm', 'mail', 'project'],
+    'data': [],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+    'license': 'LGPL-3',
+}

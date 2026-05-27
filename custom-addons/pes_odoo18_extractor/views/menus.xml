@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_o18_extractor_root"
+              name="Odoo 18 Extractor"
+              parent="account.menu_finance"
+              sequence="90"/>
+
+    <menuitem id="menu_o18_extractor_runs"
+              name="Extraction Runs"
+              parent="menu_o18_extractor_root"
+              action="action_extraction_run"
+              sequence="10"/>
+
+    <menuitem id="menu_o18_extractor_new_run"
+              name="New Extraction"
+              parent="menu_o18_extractor_root"
+              action="action_extractor_run_wizard"
+              sequence="15"/>
+
+    <menuitem id="menu_o18_staging_partners"
+              name="Staged Partners"
+              parent="menu_o18_extractor_root"
+              action="action_staging_partner"
+              sequence="20"/>
+
+    <menuitem id="menu_o18_staging_products"
+              name="Staged Products"
+              parent="menu_o18_extractor_root"
+              action="action_staging_product"
+              sequence="30"/>
+
+    <menuitem id="menu_o18_staging_sale_orders"
+              name="Staged Sale Orders"
+              parent="menu_o18_extractor_root"
+              action="action_staging_sale_order"
+              sequence="40"/>
+
+    <menuitem id="menu_o18_staging_invoices"
+              name="Staged Invoices"
+              parent="menu_o18_extractor_root"
+              action="action_staging_invoice"
+              sequence="50"/>
+
+    <menuitem id="menu_o18_staging_payments"
+              name="Staged Payments"
+              parent="menu_o18_extractor_root"
+              action="action_staging_payment"
+              sequence="60"/>
+</odoo>

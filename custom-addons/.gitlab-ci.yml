@@ -1,0 +1,79 @@
+# Villeside Odoo Addons CI/CD Pipeline
+# Target VM: pes-odoo-crm-vm (40.124.224.123)
+# Runner: OpenClaw VM Runner (shell on pes-openclaw-vm)
+# Addons path: /opt/odoo/custom-addons (already in odoo.conf)
+
+stages:
+  - deploy
+
+variables:
+  ODOO_SERVER: "40.124.224.123"
+  ODOO_DB: "pes_crm"
+  ADDONS_PATH: "/opt/odoo/custom-addons"
+  GIT_REPO: "https://git.bsdyno.com/cassilly-capital/villeside-realty/villeside-odoo-addons.git"
+
+deploy_production:
+  stage: deploy
+  tags:
+    - shell
+  script:
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - ssh-keyscan -H $ODOO_SERVER >> ~/.ssh/known_hosts 2>/dev/null || true
+    - |
+      CONNECTED=false
+      for key in ~/.ssh/id_rsa ~/.ssh/id_ed25519 ~/.ssh/runner_deploy_key; do
+        [ -f "$key" ] || continue
+        if ssh -i "$key" -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o BatchMode=yes "odoo@$ODOO_SERVER" "echo OK" 2>/dev/null; then
+          export SSH_KEY="$key"
+          CONNECTED=true
+          echo "Connected with $key"
+          break
+        fi
+      done
+      if [ "$CONNECTED" = false ]; then
+        echo "SSH connection failed"
+        exit 1
+      fi
+    - |
+      # Build authenticated repo URL using deploy token
+      AUTH_REPO="https://${CI_DEPLOY_USER}:${CI_DEPLOY_PASSWORD}@git.bsdyno.com/cassilly-capital/villeside-realty/villeside-odoo-addons.git"
+      ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no "odoo@$ODOO_SERVER" bash -s <<REMOTE
+      set -e
+      ADDONS="/opt/odoo/custom-addons"
+      REPO="$AUTH_REPO"
+
+      if [ -d "\$ADDONS/.git" ]; then
+        echo "Pulling latest..."
+        cd "\$ADDONS"
+        git remote set-url origin "\$REPO"
+        git fetch origin
+        git reset --hard origin/main
+      elif [ -d "\$ADDONS" ]; then
+        echo "Directory exists but not a git repo. Initializing..."
+        cd "\$ADDONS"
+        git init
+        git remote add origin "\$REPO"
+        git fetch origin
+        git reset --hard origin/main
+      else
+        echo "Cloning..."
+        git clone "\$REPO" "\$ADDONS"
+      fi
+
+      echo "Stopping Odoo for module update..."
+      sudo /usr/bin/systemctl stop odoo
+      sleep 5
+
+      echo "Updating modules..."
+      /opt/odoo/venv/bin/odoo -c /etc/odoo/odoo.conf -u villeside_analytics,villeside_commission -d pes_crm --stop-after-init
+
+      echo "Starting Odoo..."
+      sudo /usr/bin/systemctl start odoo
+
+      echo "Deploy complete!"
+      REMOTE
+  only:
+    - main
+  environment:
+    name: production
+    url: https://id.cassilly.capital

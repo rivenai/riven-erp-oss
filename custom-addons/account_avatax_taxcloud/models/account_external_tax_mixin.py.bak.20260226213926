@@ -1,0 +1,135 @@
+# -*- coding: utf-8 -*-
+# PES TaxCloud Integration - account_external_tax_mixin.py
+# Overrides Avalara-specific methods to use TaxCloud API
+import logging
+from odoo import models, api
+from odoo.addons.account_avatax_taxcloud.models.avatax_client import AvaTaxClient
+
+_logger = logging.getLogger(__name__)
+
+AVALARA_TO_TIC = {
+    'PC': '20010',
+    'PF': '20010',
+    'SW': '30070',
+    'SV': '30000',
+    'FR': '11010',
+    'NT': '00000',
+}
+
+
+class AccountExternalTaxMixin(models.AbstractModel):
+    _inherit = 'account.external.tax.mixin'
+
+    def _get_taxcloud_default_tic(self):
+        tic = self.env['ir.config_parameter'].sudo().get_param(
+            'taxcloud.default_tic', '20010'
+        )
+        if not tic or not str(tic).strip().isdigit():
+            tic = '20010'
+        return str(tic).strip().zfill(5)
+
+    def _resolve_tic_code(self, product):
+        """Map product to a TIC code, never raise."""
+        default_tic = self._get_taxcloud_default_tic()
+        if not product:
+            return default_tic
+        avatax_cat = getattr(product, 'avatax_category_id', None)
+        if not avatax_cat:
+            _logger.debug(
+                'TaxCloud: no avatax_category for "%s", using TIC=%s',
+                getattr(product, 'display_name', str(product)), default_tic
+            )
+            return default_tic
+        code = (avatax_cat.code or '').strip()
+        if not code:
+            return default_tic
+        if code.isdigit():
+            return code.zfill(5)
+        mapped = AVALARA_TO_TIC.get(code[:2].upper())
+        return mapped if mapped else default_tic
+
+    def _avatax_compute_tax(self, params):
+        """
+        Override enterprise _avatax_compute_tax to call TaxCloud API
+        instead of Avalara AvaTax.
+        
+        params keys used:
+          - shipping_partner: the customer/destination partner
+          - unique_code: document code for this invoice/order
+          - base_lines: list of line dicts with 'base_line', 'record', 'tax_details'
+          - is_refund: bool
+        """
+        partner = params.get('shipping_partner') or params.get('commercial_partner')
+        doc_code = params.get('unique_code') or params.get('reference') or 'pes'
+        is_refund = params.get('is_refund', False)
+        company = self.company_id
+
+        if not partner:
+            _logger.warning('TaxCloud: No partner found in params, skipping')
+            return {}
+
+        # Build lines for TaxCloud from the base_lines in params
+        lines_data = params.get('base_lines', [])
+        taxcloud_lines = []
+        for ld in lines_data:
+            base_line = ld.get('base_line', {})
+            record = base_line.get('record')
+            product = getattr(record, 'product_id', None) or False
+            tic = self._resolve_tic_code(product)
+            tax_details = base_line.get('tax_details', {})
+            amount = tax_details.get('total_excluded_currency', 0.0)
+            if is_refund:
+                amount = -amount
+            qty = abs(base_line.get('quantity', 1))
+            taxcloud_lines.append({
+                'tic': tic,
+                'amount': float(amount),
+                'qty': float(qty),
+            })
+
+        if not taxcloud_lines:
+            _logger.info('TaxCloud: No lines to compute tax for doc=%s', doc_code)
+            return {}
+
+        client = AvaTaxClient(company)
+        result = client.calculate_tax(partner, taxcloud_lines, doc_code=doc_code)
+        total_tax = result.get('tax_amount', 0.0)
+
+        _logger.info(
+            'TaxCloud _avatax_compute_tax: doc=%s, partner=%s, total_tax=%.2f',
+            doc_code, getattr(partner, 'name', str(partner)), total_tax
+        )
+
+        # Return in the format the enterprise mixin expects:
+        # A dict mapping line 'number' to tax amount, or a total
+        # The enterprise uses the return value to update tax lines
+        # We return a simple structure: total tax amount
+        return {'total': total_tax, 'lines': []}
+
+    def _prepare_avatax_document_line_service_call(self, line_data, is_refund):
+        """Override: use TIC code instead of requiring avatax_category_id."""
+        base_line = line_data['base_line']
+        record = base_line['record']
+        product = getattr(record, 'product_id', None) or False
+
+        # Use pre-resolved TIC if available, else resolve now
+        tic = line_data.get('tic') or self._resolve_tic_code(product)
+
+        company = self.company_id if hasattr(self, 'company_id') else record.company_id
+        if product and getattr(company, 'avalara_use_upc', False) and getattr(product, 'barcode', None):
+            item_code = f'UPC:{product.barcode}'
+        elif product:
+            item_code = getattr(product, 'default_code', None) or str(product.id)
+        else:
+            item_code = line_data.get('itemCode', 'ITEM')
+
+        subtotal = base_line['tax_details']['total_excluded_currency']
+        description = line_data.get('description') or getattr(record, 'name', '') or ''
+        return {
+            'amount': -subtotal if is_refund else subtotal,
+            'description': description,
+            'quantity': abs(base_line.get('quantity', 1)),
+            'taxCode': tic,
+            'itemCode': item_code,
+            'number': '%s,%s' % (base_line['record']._name, base_line['id']),
+        }

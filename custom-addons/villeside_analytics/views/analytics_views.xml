@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Agent Performance Tree View -->
+    <record id="view_analytics_agent_tree" model="ir.ui.view">
+        <field name="name">villeside.analytics.agent.tree</field>
+        <field name="model">villeside.analytics.agent</field>
+        <field name="arch" type="xml">
+            <tree string="Agent Performance">
+                <field name="agent_id"/>
+                <field name="date"/>
+                <field name="period_type"/>
+                <field name="leads_assigned"/>
+                <field name="leads_converted"/>
+                <field name="conversion_rate"/>
+                <field name="total_volume"/>
+                <field name="gross_commission"/>
+                <field name="listings_sold"/>
+                <field name="buyer_closings"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Agent Performance Form View -->
+    <record id="view_analytics_agent_form" model="ir.ui.view">
+        <field name="name">villeside.analytics.agent.form</field>
+        <field name="model">villeside.analytics.agent</field>
+        <field name="arch" type="xml">
+            <form string="Agent Performance">
+                <sheet>
+                    <group>
+                        <group string="Period">
+                            <field name="agent_id"/>
+                            <field name="date"/>
+                            <field name="period_type"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Lead Metrics">
+                            <field name="leads_assigned"/>
+                            <field name="leads_contacted"/>
+                            <field name="leads_converted"/>
+                            <field name="conversion_rate"/>
+                            <field name="avg_response_time_min"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Transaction Metrics">
+                            <field name="listings_taken"/>
+                            <field name="listings_sold"/>
+                            <field name="buyer_closings"/>
+                            <field name="total_volume"/>
+                            <field name="avg_sale_price"/>
+                            <field name="avg_days_on_market"/>
+                            <field name="list_to_sale_ratio"/>
+                        </group>
+                        <group string="Revenue Metrics">
+                            <field name="gross_commission"/>
+                            <field name="net_commission"/>
+                            <field name="pending_commission"/>
+                        </group>
+                    </group>
+                    <group string="Activity Metrics">
+                        <group>
+                            <field name="showings_conducted"/>
+                            <field name="open_houses"/>
+                            <field name="calls_made"/>
+                        </group>
+                        <group>
+                            <field name="emails_sent"/>
+                            <field name="appointments_set"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Agent Performance Search View -->
+    <record id="view_analytics_agent_search" model="ir.ui.view">
+        <field name="name">villeside.analytics.agent.search</field>
+        <field name="model">villeside.analytics.agent</field>
+        <field name="arch" type="xml">
+            <search string="Agent Performance">
+                <field name="agent_id"/>
+                <field name="date"/>
+                <filter name="monthly" string="Monthly" domain="[('period_type','=','monthly')]"/>
+                <filter name="quarterly" string="Quarterly" domain="[('period_type','=','quarterly')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_agent" string="Agent" context="{'group_by':'agent_id'}"/>
+                    <filter name="group_period" string="Period" context="{'group_by':'period_type'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Agent Performance Action -->
+    <record id="action_analytics_agent" model="ir.actions.act_window">
+        <field name="name">Agent Performance</field>
+        <field name="res_model">villeside.analytics.agent</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_analytics_agent_search"/>
+    </record>
+
+    <!-- Market Analytics Tree View -->
+    <record id="view_analytics_market_tree" model="ir.ui.view">
+        <field name="name">villeside.analytics.market.tree</field>
+        <field name="model">villeside.analytics.market</field>
+        <field name="arch" type="xml">
+            <tree string="Market Analytics">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="zip_code"/>
+                <field name="city"/>
+                <field name="median_sale_price"/>
+                <field name="active_listings"/>
+                <field name="closed_sales"/>
+                <field name="avg_days_on_market"/>
+                <field name="months_of_inventory"/>
+                <field name="price_change_pct"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Market Analytics Form View -->
+    <record id="view_analytics_market_form" model="ir.ui.view">
+        <field name="name">villeside.analytics.market.form</field>
+        <field name="model">villeside.analytics.market</field>
+        <field name="arch" type="xml">
+            <form string="Market Analytics">
+                <sheet>
+                    <group>
+                        <group string="Snapshot Info">
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Location">
+                            <field name="zip_code"/>
+                            <field name="neighborhood"/>
+                            <field name="city"/>
+                            <field name="state_code"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Pricing">
+                            <field name="median_list_price"/>
+                            <field name="median_sale_price"/>
+                            <field name="avg_price_per_sqft"/>
+                            <field name="list_to_sale_ratio"/>
+                            <field name="price_change_pct"/>
+                        </group>
+                        <group string="Inventory">
+                            <field name="active_listings"/>
+                            <field name="new_listings"/>
+                            <field name="pending_sales"/>
+                            <field name="closed_sales"/>
+                            <field name="avg_days_on_market"/>
+                            <field name="months_of_inventory"/>
+                            <field name="absorption_rate"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Market Analytics Search View -->
+    <record id="view_analytics_market_search" model="ir.ui.view">
+        <field name="name">villeside.analytics.market.search</field>
+        <field name="model">villeside.analytics.market</field>
+        <field name="arch" type="xml">
+            <search string="Market Analytics">
+                <field name="name"/>
+                <field name="zip_code"/>
+                <field name="city"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_zip" string="ZIP Code" context="{'group_by':'zip_code'}"/>
+                    <filter name="group_city" string="City" context="{'group_by':'city'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Market Analytics Action -->
+    <record id="action_analytics_market" model="ir.actions.act_window">
+        <field name="name">Market Snapshots</field>
+        <field name="res_model">villeside.analytics.market</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_analytics_market_search"/>
+    </record>
+
+    <!-- Pipeline Snapshot Tree View -->
+    <record id="view_analytics_pipeline_tree" model="ir.ui.view">
+        <field name="name">villeside.analytics.pipeline.tree</field>
+        <field name="model">villeside.analytics.pipeline</field>
+        <field name="arch" type="xml">
+            <tree string="Pipeline Snapshots">
+                <field name="date"/>
+                <field name="total_leads"/>
+                <field name="new_leads"/>
+                <field name="qualified_leads"/>
+                <field name="pending_closings"/>
+                <field name="closed_won"/>
+                <field name="closed_lost"/>
+                <field name="pipeline_value"/>
+                <field name="win_rate"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Pipeline Snapshot Form View -->
+    <record id="view_analytics_pipeline_form" model="ir.ui.view">
+        <field name="name">villeside.analytics.pipeline.form</field>
+        <field name="model">villeside.analytics.pipeline</field>
+        <field name="arch" type="xml">
+            <form string="Pipeline Snapshot">
+                <sheet>
+                    <group>
+                        <group string="Period">
+                            <field name="date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Lead Funnel">
+                            <field name="total_leads"/>
+                            <field name="new_leads"/>
+                            <field name="qualified_leads"/>
+                            <field name="proposals_sent"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Closings">
+                            <field name="pending_closings"/>
+                            <field name="closed_won"/>
+                            <field name="closed_lost"/>
+                            <field name="win_rate"/>
+                            <field name="avg_sales_cycle_days"/>
+                        </group>
+                        <group string="Value">
+                            <field name="pipeline_value"/>
+                            <field name="weighted_value"/>
+                            <field name="avg_deal_size"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Pipeline Snapshot Search View -->
+    <record id="view_analytics_pipeline_search" model="ir.ui.view">
+        <field name="name">villeside.analytics.pipeline.search</field>
+        <field name="model">villeside.analytics.pipeline</field>
+        <field name="arch" type="xml">
+            <search string="Pipeline Snapshots">
+                <field name="date"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_date" string="Date" context="{'group_by':'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Pipeline Snapshot Action -->
+    <record id="action_analytics_pipeline" model="ir.actions.act_window">
+        <field name="name">Pipeline Snapshots</field>
+        <field name="res_model">villeside.analytics.pipeline</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_analytics_pipeline_search"/>
+    </record>
+</odoo>

@@ -1,0 +1,49 @@
+import logging
+from odoo import models
+
+_logger = logging.getLogger(__name__)
+DEFAULT_TIC = 'PC070000'
+
+
+class AccountMoveTaxCloud(models.Model):
+    """Patch account.move to override the Avalara line validator.
+    Uses TIC fallback PC070000 for products without an avatax_category_id.
+    """
+    _inherit = 'account.move'
+
+    def _prepare_avatax_document_line_service_call(self, line_data, is_refund):
+        """Override: use PC070000 TIC fallback instead of raising UserError."""
+        base_line = line_data.get('base_line', {})
+        product = base_line.get('product_id')
+
+        # Guard: missing product or product without Avalara category
+        try:
+            avatax_cat = product._get_avatax_category_id() if product else False
+        except Exception:
+            avatax_cat = False
+
+        if not avatax_cat:
+            _logger.info(
+                'TaxCloud: no avatax_category for "%s", using TIC=%s',
+                getattr(product, 'display_name', 'None'),
+                DEFAULT_TIC
+            )
+            tax_details = line_data.get('tax_details', {})
+            subtotal = tax_details.get('total_excluded_currency', 0.0)
+            amount = -float(subtotal) if is_refund else float(subtotal)
+
+            item_code = getattr(product, 'default_code', '') or 'MISC'
+            description = getattr(product, 'name', '') or base_line.get('name', 'Line')
+            quantity = abs(float(base_line.get('quantity', 1.0)))
+
+            # Build the minimal line dict that _prepare_avatax_document_service_call expects
+            return {
+                'amount': amount,
+                'description': description[:255] if description else 'Line',
+                'quantity': quantity,
+                'taxCode': DEFAULT_TIC,
+                'itemCode': (item_code or 'MISC')[:50],
+                'number': 'line-%s' % base_line.get('id', 0),
+            }
+
+        return super()._prepare_avatax_document_line_service_call(line_data, is_refund)

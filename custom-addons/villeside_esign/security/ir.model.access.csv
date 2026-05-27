@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_esign_document_user,villeside.esign.document.user,model_villeside_esign_document,base.group_user,1,1,1,0
+access_esign_document_manager,villeside.esign.document.manager,model_villeside_esign_document,base.group_system,1,1,1,1
+access_esign_template_user,villeside.esign.template.user,model_villeside_esign_template,base.group_user,1,0,0,0
+access_esign_template_manager,villeside.esign.template.manager,model_villeside_esign_template,base.group_system,1,1,1,1
+access_esign_signer_user,villeside.esign.signer.user,model_villeside_esign_signer,base.group_user,1,1,1,0
+access_esign_signer_manager,villeside.esign.signer.manager,model_villeside_esign_signer,base.group_system,1,1,1,1
+access_esign_template_field_user,villeside.esign.template.field.user,model_villeside_esign_template_field,base.group_user,1,0,0,0
+access_esign_template_field_manager,villeside.esign.template.field.manager,model_villeside_esign_template_field,base.group_system,1,1,1,1

@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_drip_campaign_user,villeside.drip.campaign.user,model_villeside_drip_campaign,base.group_user,1,1,1,0
+access_drip_campaign_manager,villeside.drip.campaign.manager,model_villeside_drip_campaign,base.group_system,1,1,1,1
+access_drip_step_user,villeside.drip.step.user,model_villeside_drip_step,base.group_user,1,1,1,0
+access_drip_step_manager,villeside.drip.step.manager,model_villeside_drip_step,base.group_system,1,1,1,1
+access_drip_queue_user,villeside.drip.queue.user,model_villeside_drip_queue,base.group_user,1,1,0,0
+access_drip_queue_manager,villeside.drip.queue.manager,model_villeside_drip_queue,base.group_system,1,1,1,1

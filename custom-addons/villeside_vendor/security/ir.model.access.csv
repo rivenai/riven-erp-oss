@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vendor_user,villeside.vendor.user,model_villeside_vendor,base.group_user,1,1,1,0
+access_vendor_manager,villeside.vendor.manager,model_villeside_vendor,base.group_system,1,1,1,1
+access_vendor_review_user,villeside.vendor.review.user,model_villeside_vendor_review,base.group_user,1,1,1,0
+access_vendor_review_manager,villeside.vendor.review.manager,model_villeside_vendor_review,base.group_system,1,1,1,1

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Transaction Form View -->
+    <record id="view_villeside_transaction_form" model="ir.ui.view">
+        <field name="name">villeside.transaction.form</field>
+        <field name="model">villeside.transaction</field>
+        <field name="arch" type="xml">
+            <form string="Transaction">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,offer,accepted,under_contract,inspection,appraisal,clear_to_close,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Transaction Info">
+                            <field name="transaction_type"/>
+                            <field name="property_id"/>
+                            <field name="property_address"/>
+                            <field name="lead_id"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Financial">
+                            <field name="offer_price"/>
+                            <field name="accepted_price"/>
+                            <field name="sale_price"/>
+                            <field name="earnest_money"/>
+                            <field name="seller_concessions"/>
+                            <field name="buyer_closing_costs"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Parties">
+                            <group>
+                                <group string="Buyer Side">
+                                    <field name="buyer_id"/>
+                                    <field name="buyer_agent_id"/>
+                                    <field name="lender_id"/>
+                                </group>
+                                <group string="Seller Side">
+                                    <field name="seller_id"/>
+                                    <field name="listing_agent_id"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Service Providers">
+                                    <field name="transaction_coordinator_id"/>
+                                    <field name="title_company_id"/>
+                                    <field name="inspector_id"/>
+                                    <field name="appraiser_id"/>
+                                    <field name="attorney_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Key Dates">
+                            <group>
+                                <group string="Offer &amp; Contract">
+                                    <field name="offer_date"/>
+                                    <field name="acceptance_date"/>
+                                    <field name="closing_date"/>
+                                    <field name="actual_closing_date"/>
+                                    <field name="possession_date"/>
+                                </group>
+                                <group string="Contingencies">
+                                    <field name="inspection_deadline"/>
+                                    <field name="inspection_complete_date"/>
+                                    <field name="appraisal_ordered_date"/>
+                                    <field name="appraisal_complete_date"/>
+                                    <field name="appraisal_value"/>
+                                    <field name="financing_deadline"/>
+                                    <field name="financing_approved_date"/>
+                                    <field name="title_received_date"/>
+                                    <field name="clear_to_close_date"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Commission">
+                            <group>
+                                <group>
+                                    <field name="listing_commission_pct"/>
+                                    <field name="buyer_commission_pct"/>
+                                    <field name="listing_commission_amount"/>
+                                    <field name="buyer_commission_amount"/>
+                                    <field name="commission_line_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Compliance Checklist">
+                            <field name="checklist_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="category"/>
+                                    <field name="name"/>
+                                    <field name="is_required"/>
+                                    <field name="due_date"/>
+                                    <field name="is_complete"/>
+                                    <field name="completed_date"/>
+                                    <field name="completed_by"/>
+                                    <field name="document_id"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids" widget="many2many_binary"/>
+                        </page>
+                        <page string="Notes">
+                            <field name="special_terms"/>
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Transaction Tree View -->
+    <record id="view_villeside_transaction_tree" model="ir.ui.view">
+        <field name="name">villeside.transaction.tree</field>
+        <field name="model">villeside.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="Transactions" decoration-success="state=='closed'" decoration-warning="state in ('inspection','appraisal','financing')" decoration-danger="state in ('fell_through','cancelled')">
+                <field name="name"/>
+                <field name="transaction_type"/>
+                <field name="property_address"/>
+                <field name="buyer_id"/>
+                <field name="seller_id"/>
+                <field name="accepted_price"/>
+                <field name="closing_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Transaction Search View -->
+    <record id="view_villeside_transaction_search" model="ir.ui.view">
+        <field name="name">villeside.transaction.search</field>
+        <field name="model">villeside.transaction</field>
+        <field name="arch" type="xml">
+            <search string="Search Transactions">
+                <field name="name"/>
+                <field name="property_address"/>
+                <field name="buyer_id"/>
+                <field name="seller_id"/>
+                <filter string="Active" name="active" domain="[('state','not in',['closed','fell_through','cancelled'])]"/>
+                <filter string="Closed" name="closed" domain="[('state','=','closed')]"/>
+                <separator/>
+                <filter string="Purchase" name="purchase" domain="[('transaction_type','=','purchase')]"/>
+                <filter string="Sale" name="sale" domain="[('transaction_type','=','sale')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by':'state'}"/>
+                    <filter string="Type" name="group_type" context="{'group_by':'transaction_type'}"/>
+                    <filter string="Closing Date" name="group_closing" context="{'group_by':'closing_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Transaction Kanban View -->
+    <record id="view_villeside_transaction_kanban" model="ir.ui.view">
+        <field name="name">villeside.transaction.kanban</field>
+        <field name="model">villeside.transaction</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="property_address"/>
+                <field name="accepted_price"/>
+                <field name="state"/>
+                <field name="closing_date"/>
+                <field name="buyer_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <strong><field name="name"/></strong>
+                                <div><field name="property_address"/></div>
+                                <div class="text-primary"><field name="accepted_price" widget="monetary"/></div>
+                                <div>Buyer: <field name="buyer_id"/></div>
+                                <div class="text-muted">Close: <field name="closing_date"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_villeside_transaction" model="ir.actions.act_window">
+        <field name="name">Transactions</field>
+        <field name="res_model">villeside.transaction</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_villeside_transaction_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first transaction</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Default Property Features -->
+    <record id="feature_hardwood" model="villeside.property.feature">
+        <field name="name">Hardwood Floors</field>
+        <field name="category">interior</field>
+    </record>
+    <record id="feature_granite" model="villeside.property.feature">
+        <field name="name">Granite Countertops</field>
+        <field name="category">interior</field>
+    </record>
+    <record id="feature_fireplace" model="villeside.property.feature">
+        <field name="name">Fireplace</field>
+        <field name="category">interior</field>
+    </record>
+    <record id="feature_central_air" model="villeside.property.feature">
+        <field name="name">Central Air</field>
+        <field name="category">interior</field>
+    </record>
+    <record id="feature_deck" model="villeside.property.feature">
+        <field name="name">Deck/Patio</field>
+        <field name="category">exterior</field>
+    </record>
+    <record id="feature_fenced" model="villeside.property.feature">
+        <field name="name">Fenced Yard</field>
+        <field name="category">exterior</field>
+    </record>
+    <record id="feature_hoa" model="villeside.property.feature">
+        <field name="name">HOA Community</field>
+        <field name="category">community</field>
+    </record>
+    <record id="feature_energy_star" model="villeside.property.feature">
+        <field name="name">Energy Star Appliances</field>
+        <field name="category">green</field>
+    </record>
+</odoo>

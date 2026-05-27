@@ -1,0 +1,93 @@
+# PES TaxCloud Integration - account_external_tax_mixin.py
+# Overrides _avatax_compute_tax to use TaxCloud API instead of Avalara
+
+import logging
+import requests
+from odoo import models, api, fields
+from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
+
+TC_LOOKUP = 'https://api.taxcloud.net/1.0/TaxCloud/Lookup'
+TC_AUTHORIZED = 'https://api.taxcloud.net/1.0/TaxCloud/Authorized'
+
+
+class AccountExternalTaxMixin(models.AbstractModel):
+    _inherit = 'account.external.tax.mixin'
+
+    def _avatax_compute_tax(self):
+        """Override to call TaxCloud API instead of Avalara.
+        Routes through TaxCloud Lookup endpoint using configured credentials."""
+        for invoice in self:
+            if not invoice.is_avatax:
+                continue
+
+            co = invoice.company_id
+            partner = invoice.partner_id
+
+            # Get TaxCloud credentials from avatax_client.py
+            try:
+                from odoo.addons.account_avatax.lib.avatax_client import AvataxClient
+                # AvataxClient is already rewired to TaxCloud in avatax_client.py
+                client = AvataxClient(co)
+                items = []
+                for i, line in enumerate(invoice.invoice_line_ids.filtered(
+                        lambda l: not l.display_type and l.price_subtotal), start=1):
+                    tic_code = line.product_id.avatax_category_id.code if line.product_id.avatax_category_id else 'PC070000'
+                    items.append({
+                        'Index': i,
+                        'ItemID': str(line.product_id.id or i),
+                        'TIC': tic_code,
+                        'Price': float(line.price_unit),
+                        'Qty': float(line.quantity),
+                    })
+
+                if not items:
+                    continue
+
+                result = client.get_tax(
+                    origin={'Address1': co.street or '', 'City': co.city or '',
+                            'State': co.state_id.code or 'OR', 'Zip5': (co.zip or '')[:5], 'Zip4': ''},
+                    destination={'Address1': partner.street or '', 'City': partner.city or '',
+                                 'State': partner.state_id.code or '', 'Zip5': (partner.zip or '')[:5], 'Zip4': ''},
+                    cart_items=items
+                )
+
+                if result and result.get('ResponseType') == 'OK':
+                    tax_map = {ci['CartItemIndex']: ci['TaxAmount']
+                               for ci in result.get('CartItemsResponse', [])}
+                    for i, line in enumerate(invoice.invoice_line_ids.filtered(
+                            lambda l: not l.display_type and l.price_subtotal), start=1):
+                        amt = tax_map.get(i, 0.0)
+                        if amt:
+                            self._apply_tc_tax(line, float(amt))
+                    _logger.info('TaxCloud Lookup OK for invoice %s', invoice.name)
+                else:
+                    msg = result.get('Messages', 'No response') if result else 'API error'
+                    _logger.warning('TaxCloud API: %s', msg)
+
+            except Exception as e:
+                _logger.error('TaxCloud _avatax_compute_tax error: %s', e)
+                # Don't block invoice creation - log and continue
+                raise UserError('TaxCloud API error: %s' % str(e))
+
+    def _apply_tc_tax(self, line, tax_amount):
+        """Apply computed tax amount as a fixed-amount tax on invoice line."""
+        tax = self.env['account.tax'].search([
+            ('name', 'ilike', 'TaxCloud'),
+            ('company_id', '=', self.company_id.id),
+            ('type_tax_use', '=', 'sale')
+        ], limit=1)
+        if not tax:
+            tax = self.env['account.tax'].create({
+                'name': 'US Tax (TaxCloud)',
+                'type_tax_use': 'sale',
+                'amount_type': 'percent',
+                'amount': 0.0,
+                'company_id': self.company_id.id,
+            })
+        base = float(line.price_unit) * float(line.quantity)
+        pct = (tax_amount / base * 100) if base else 0
+        tax.write({'amount': pct})
+        line.tax_ids = [(4, tax.id)]
+        _logger.info('TaxCloud: %.4f%% on %s', pct, line.name)

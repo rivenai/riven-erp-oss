@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_commission_plan_user,villeside.commission.plan.user,model_villeside_commission_plan,base.group_user,1,0,0,0
+access_commission_plan_manager,villeside.commission.plan.manager,model_villeside_commission_plan,base.group_system,1,1,1,1
+access_commission_tier_user,villeside.commission.tier.user,model_villeside_commission_tier,base.group_user,1,0,0,0
+access_commission_tier_manager,villeside.commission.tier.manager,model_villeside_commission_tier,base.group_system,1,1,1,1
+access_commission_line_user,villeside.commission.line.user,model_villeside_commission_line,base.group_user,1,0,0,0
+access_commission_line_manager,villeside.commission.line.manager,model_villeside_commission_line,base.group_system,1,1,1,1

@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_flexmls_config_admin,flexmls.config.admin,model_flexmls_config,base.group_system,1,1,1,1
+access_flexmls_config_user,flexmls.config.user,model_flexmls_config,base.group_user,1,0,0,0
+access_flexmls_listing_admin,flexmls.listing.admin,model_flexmls_listing,base.group_system,1,1,1,1
+access_flexmls_listing_user,flexmls.listing.user,model_flexmls_listing,base.group_user,1,1,1,0
+access_flexmls_listing_public,flexmls.listing.public,model_flexmls_listing,base.group_public,1,0,0,0

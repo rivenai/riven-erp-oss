@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Property Listing Form View -->
+    <record id="view_villeside_property_form" model="ir.ui.view">
+        <field name="name">villeside.property.form</field>
+        <field name="model">villeside.property</field>
+        <field name="arch" type="xml">
+            <form string="Property Listing">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,active,pending,under_contract,sold"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Address">
+                            <field name="street"/>
+                            <field name="street2"/>
+                            <field name="city"/>
+                            <field name="state_id"/>
+                            <field name="zip_code"/>
+                            <field name="county"/>
+                            <field name="neighborhood"/>
+                            <field name="subdivision"/>
+                        </group>
+                        <group string="Listing Info">
+                            <field name="mls_number"/>
+                            <field name="flexmls_id"/>
+                            <field name="property_type"/>
+                            <field name="list_price"/>
+                            <field name="original_list_price"/>
+                            <field name="sold_price"/>
+                            <field name="price_per_sqft"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <group>
+                                <group string="Property Details">
+                                    <field name="bedrooms"/>
+                                    <field name="bathrooms_full"/>
+                                    <field name="bathrooms_half"/>
+                                    <field name="sqft_living"/>
+                                    <field name="sqft_total"/>
+                                    <field name="lot_size_acres"/>
+                                    <field name="lot_size_sqft"/>
+                                    <field name="year_built"/>
+                                    <field name="stories"/>
+                                </group>
+                                <group string="Amenities">
+                                    <field name="garage_spaces"/>
+                                    <field name="parking_type"/>
+                                    <field name="basement"/>
+                                    <field name="pool"/>
+                                    <field name="hoa_fee"/>
+                                    <field name="feature_ids" widget="many2many_tags"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Dates">
+                            <group>
+                                <group>
+                                    <field name="list_date"/>
+                                    <field name="pending_date"/>
+                                    <field name="sold_date"/>
+                                    <field name="expiration_date"/>
+                                    <field name="dom"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Agents &amp; Contacts">
+                            <group>
+                                <group>
+                                    <field name="listing_agent_id"/>
+                                    <field name="co_listing_agent_id"/>
+                                    <field name="seller_id"/>
+                                    <field name="buyer_id"/>
+                                    <field name="buyer_agent_id"/>
+                                    <field name="lead_id"/>
+                                </group>
+                                <group string="Commission">
+                                    <field name="listing_commission_pct"/>
+                                    <field name="buyer_commission_pct"/>
+                                    <field name="total_commission"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Description">
+                            <field name="description"/>
+                            <field name="private_remarks"/>
+                            <field name="showing_instructions"/>
+                        </page>
+                        <page string="Media">
+                            <field name="image_ids" widget="many2many_binary"/>
+                            <group>
+                                <field name="virtual_tour_url" widget="url"/>
+                                <field name="video_url" widget="url"/>
+                            </group>
+                        </page>
+                        <page string="Tax &amp; Zoning">
+                            <group>
+                                <field name="school_district"/>
+                                <field name="zoning"/>
+                                <field name="tax_amount"/>
+                                <field name="tax_year"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Property Listing Tree View -->
+    <record id="view_villeside_property_tree" model="ir.ui.view">
+        <field name="name">villeside.property.tree</field>
+        <field name="model">villeside.property</field>
+        <field name="arch" type="xml">
+            <tree string="Property Listings" decoration-success="status=='active'" decoration-info="status=='pending'" decoration-muted="status in ('sold','withdrawn','expired','cancelled')">
+                <field name="mls_number"/>
+                <field name="name"/>
+                <field name="property_type"/>
+                <field name="list_price"/>
+                <field name="bedrooms"/>
+                <field name="bathrooms_full"/>
+                <field name="sqft_living"/>
+                <field name="listing_agent_id"/>
+                <field name="list_date"/>
+                <field name="dom"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Property Listing Search View -->
+    <record id="view_villeside_property_search" model="ir.ui.view">
+        <field name="name">villeside.property.search</field>
+        <field name="model">villeside.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name"/>
+                <field name="mls_number"/>
+                <field name="street"/>
+                <field name="city"/>
+                <field name="zip_code"/>
+                <field name="listing_agent_id"/>
+                <field name="seller_id"/>
+                <filter string="Active" name="active" domain="[('status','=','active')]"/>
+                <filter string="Pending" name="pending" domain="[('status','=','pending')]"/>
+                <filter string="Under Contract" name="under_contract" domain="[('status','=','under_contract')]"/>
+                <filter string="Sold" name="sold" domain="[('status','=','sold')]"/>
+                <separator/>
+                <filter string="My Listings" name="my_listings" domain="[('listing_agent_id.user_id','=',uid)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_status" context="{'group_by':'status'}"/>
+                    <filter string="Property Type" name="group_type" context="{'group_by':'property_type'}"/>
+                    <filter string="Agent" name="group_agent" context="{'group_by':'listing_agent_id'}"/>
+                    <filter string="City" name="group_city" context="{'group_by':'city'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Property Listing Kanban View -->
+    <record id="view_villeside_property_kanban" model="ir.ui.view">
+        <field name="name">villeside.property.kanban</field>
+        <field name="model">villeside.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="list_price"/>
+                <field name="status"/>
+                <field name="property_type"/>
+                <field name="bedrooms"/>
+                <field name="bathrooms_full"/>
+                <field name="sqft_living"/>
+                <field name="listing_agent_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <strong><field name="name"/></strong>
+                                <div><field name="property_type"/></div>
+                                <div class="text-primary"><field name="list_price" widget="monetary"/></div>
+                                <div><field name="bedrooms"/> bd | <field name="bathrooms_full"/> ba | <field name="sqft_living"/> sqft</div>
+                                <div class="text-muted"><field name="listing_agent_id"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_villeside_property" model="ir.actions.act_window">
+        <field name="name">Property Listings</field>
+        <field name="res_model">villeside.property</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_villeside_property_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first property listing</p>
+        </field>
+    </record>
+</odoo>

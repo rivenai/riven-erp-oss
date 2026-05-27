@@ -1,0 +1,52 @@
+import requests, logging
+from odoo import models
+from odoo.exceptions import UserError
+_logger = logging.getLogger(__name__)
+TC_LOOKUP = 'https://api.taxcloud.net/1.0/TaxCloud/Lookup'
+TC_CAPTURED = 'https://api.taxcloud.net/1.0/TaxCloud/Captured'
+TC_RETURNED = 'https://api.taxcloud.net/1.0/TaxCloud/Returned'
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+    def _avatax_compute_tax(self):
+        self.ensure_one()
+        cfg = self._find_avatax_credentials_company(self.company_id)
+        if not cfg or not cfg.api_id or not cfg.api_key:
+            return super()._avatax_compute_tax()
+        return self._taxcloud_lookup(cfg.api_id, cfg.api_key)
+    def _taxcloud_lookup(self, login, key):
+        partner = self.partner_shipping_id or self.partner_id
+        if not partner or not partner.zip:
+            raise UserError('TaxCloud: no ZIP on partner %s' % partner.name)
+        items = []
+        idx = 1
+        for ln in self.invoice_line_ids.filtered(lambda l: not l.display_type and l.price_subtotal):
+            items.append({'Index': idx, 'ItemID': str(ln.product_id.id or idx), 'TIC': 0, 'Price': float(ln.price_unit), 'Qty': float(ln.quantity)})
+            idx += 1
+        if not items:
+            return
+        co = self.company_id
+        payload = {'apiLoginID': login, 'apiKey': key, 'customerID': str(partner.id), 'cartID': self.name or str(self.id), 'deliveredBySeller': False, 'origin': {'Address1': co.street or '', 'City': co.city or '', 'State': co.state_id.code or 'KY', 'Zip5': (co.zip or '')[:5], 'Zip4': ''}, 'destination': {'Address1': partner.street or '', 'City': partner.city or '', 'State': partner.state_id.code or '', 'Zip5': (partner.zip or '')[:5], 'Zip4': ''}, 'cartItems': items}
+        try:
+            r = requests.post(TC_LOOKUP, json=payload, timeout=10)
+            r.raise_for_status()
+            d = r.json()
+        except Exception as e:
+            raise UserError('TaxCloud API error: %s' % e)
+        if d.get('ResponseType') != 'OK':
+            raise UserError('TaxCloud: %s' % d.get('Messages', ''))
+        tax_map = {ci['CartItemIndex']: ci['TaxAmount'] for ci in d.get('CartItemsResponse', [])}
+        i = 1
+        for ln in self.invoice_line_ids.filtered(lambda l: not l.display_type and l.price_subtotal):
+            amt = tax_map.get(i, 0.0)
+            if amt:
+                self._apply_tc_tax(ln, amt)
+            i += 1
+    def _apply_tc_tax(self, line, tax_amount):
+        tax = self.env['account.tax'].search([('name', 'ilike', 'TaxCloud'), ('company_id', '=', self.company_id.id), ('type_tax_use', '=', 'sale')], limit=1)
+        if not tax:
+            tax = self.env['account.tax'].create({'name': 'US Tax (TaxCloud)', 'type_tax_use': 'sale', 'amount_type': 'percent', 'amount': 0.0, 'company_id': self.company_id.id})
+        base = float(line.price_unit) * float(line.quantity)
+        pct = (tax_amount / base * 100) if base else 0
+        tax.write({'amount': pct})
+        line.tax_ids = [(4, tax.id)]
+        _logger.info('TaxCloud: %.4f%% on %s', pct, line.name)

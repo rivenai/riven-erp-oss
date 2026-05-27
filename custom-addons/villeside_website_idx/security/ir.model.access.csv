@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_idx_config_user,villeside.idx.config.user,model_villeside_idx_config,base.group_user,1,0,0,0
+access_idx_config_manager,villeside.idx.config.manager,model_villeside_idx_config,base.group_system,1,1,1,1
+access_website_search_user,villeside.website.search.user,model_villeside_website_search,base.group_user,1,1,1,0
+access_website_search_manager,villeside.website.search.manager,model_villeside_website_search,base.group_system,1,1,1,1
+access_website_lead_user,villeside.website.lead.user,model_villeside_website_lead,base.group_user,1,1,1,0
+access_website_lead_manager,villeside.website.lead.manager,model_villeside_website_lead,base.group_system,1,1,1,1

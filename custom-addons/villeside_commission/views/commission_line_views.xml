@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Commission Line Tree View -->
+    <record id="view_commission_line_tree" model="ir.ui.view">
+        <field name="name">villeside.commission.line.tree</field>
+        <field name="model">villeside.commission.line</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Lines" decoration-success="state=='paid'" decoration-warning="state=='pending'" decoration-muted="state=='cancelled'">
+                <field name="name"/>
+                <field name="agent_id"/>
+                <field name="property_address"/>
+                <field name="close_date"/>
+                <field name="sale_price"/>
+                <field name="commission_rate"/>
+                <field name="gross_commission"/>
+                <field name="agent_amount"/>
+                <field name="net_agent_payout"/>
+                <field name="state"/>
+                <field name="side"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Commission Line Form View -->
+    <record id="view_commission_line_form" model="ir.ui.view">
+        <field name="name">villeside.commission.line.form</field>
+        <field name="model">villeside.commission.line</field>
+        <field name="arch" type="xml">
+            <form string="Commission Line">
+                <header>
+                    <button name="action_mark_paid" string="Mark Paid" type="object" class="oe_highlight" attrs="{'invisible': [('state','not in',['draft','pending'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,pending,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Transaction Details">
+                            <field name="agent_id"/>
+                            <field name="plan_id"/>
+                            <field name="lead_id"/>
+                            <field name="property_address"/>
+                            <field name="close_date"/>
+                            <field name="side"/>
+                        </group>
+                        <group string="Commission Calculation">
+                            <field name="sale_price"/>
+                            <field name="commission_rate"/>
+                            <field name="gross_commission"/>
+                            <field name="agent_split_pct"/>
+                            <field name="agent_amount"/>
+                            <field name="broker_amount"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Fees and Deductions">
+                            <field name="transaction_fee"/>
+                            <field name="admin_fee"/>
+                            <field name="team_lead_override_pct"/>
+                            <field name="team_lead_override_amount"/>
+                        </group>
+                        <group string="Payout">
+                            <field name="net_agent_payout"/>
+                            <field name="payment_date"/>
+                            <field name="invoice_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Commission Line Search View -->
+    <record id="view_commission_line_search" model="ir.ui.view">
+        <field name="name">villeside.commission.line.search</field>
+        <field name="model">villeside.commission.line</field>
+        <field name="arch" type="xml">
+            <search string="Commission Lines">
+                <field name="agent_id"/>
+                <field name="property_address"/>
+                <field name="plan_id"/>
+                <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="pending" string="Pending" domain="[('state','=','pending')]"/>
+                <filter name="paid" string="Paid" domain="[('state','=','paid')]"/>
+                <separator/>
+                <filter name="buy_side" string="Buy Side" domain="[('side','=','buy')]"/>
+                <filter name="sell_side" string="Sell Side" domain="[('side','=','sell')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_agent" string="Agent" context="{'group_by':'agent_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by':'state'}"/>
+                    <filter name="group_plan" string="Plan" context="{'group_by':'plan_id'}"/>
+                    <filter name="group_close" string="Close Date" context="{'group_by':'close_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Commission Line Action -->
+    <record id="action_commission_line" model="ir.actions.act_window">
+        <field name="name">Commission Lines</field>
+        <field name="res_model">villeside.commission.line</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="search_view_id" ref="view_commission_line_search"/>
+    </record>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Standard 70/30 Fixed Split Plan -->
+    <record id="plan_standard_fixed" model="villeside.commission.plan">
+        <field name="name">Standard 70/30 Split</field>
+        <field name="plan_type">fixed</field>
+        <field name="agent_split_pct">70.0</field>
+        <field name="transaction_fee">395.00</field>
+        <field name="eo_insurance_fee">40.00</field>
+    </record>
+
+    <!-- Premium 80/20 Fixed Split Plan -->
+    <record id="plan_premium_fixed" model="villeside.commission.plan">
+        <field name="name">Premium 80/20 Split</field>
+        <field name="plan_type">fixed</field>
+        <field name="agent_split_pct">80.0</field>
+        <field name="transaction_fee">495.00</field>
+        <field name="eo_insurance_fee">40.00</field>
+        <field name="desk_fee">500.00</field>
+    </record>
+
+    <!-- Capped Plan -->
+    <record id="plan_capped" model="villeside.commission.plan">
+        <field name="name">Capped Plan - $18K Annual</field>
+        <field name="plan_type">capped</field>
+        <field name="agent_split_pct">70.0</field>
+        <field name="annual_cap">18000.00</field>
+        <field name="post_cap_agent_pct">95.0</field>
+        <field name="transaction_fee">395.00</field>
+        <field name="eo_insurance_fee">40.00</field>
+    </record>
+
+    <!-- 100% Flat Fee Plan -->
+    <record id="plan_flat_fee" model="villeside.commission.plan">
+        <field name="name">100% Plan - Flat Fee</field>
+        <field name="plan_type">flat_fee</field>
+        <field name="agent_split_pct">100.0</field>
+        <field name="flat_fee_per_txn">500.00</field>
+        <field name="transaction_fee">395.00</field>
+        <field name="eo_insurance_fee">40.00</field>
+    </record>
+</odoo>

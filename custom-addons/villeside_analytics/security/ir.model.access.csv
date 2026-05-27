@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_villeside_analytics_agent_user,villeside.analytics.agent.user,model_villeside_analytics_agent,base.group_user,1,0,0,0
+access_villeside_analytics_agent_manager,villeside.analytics.agent.manager,model_villeside_analytics_agent,base.group_system,1,1,1,1
+access_villeside_analytics_market_user,villeside.analytics.market.user,model_villeside_analytics_market,base.group_user,1,0,0,0
+access_villeside_analytics_market_manager,villeside.analytics.market.manager,model_villeside_analytics_market,base.group_system,1,1,1,1
+access_villeside_analytics_pipeline_user,villeside.analytics.pipeline.user,model_villeside_analytics_pipeline,base.group_user,1,0,0,0
+access_villeside_analytics_pipeline_manager,villeside.analytics.pipeline.manager,model_villeside_analytics_pipeline,base.group_system,1,1,1,1

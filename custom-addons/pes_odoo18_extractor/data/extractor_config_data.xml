@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Default Odoo 18 connection params (overridden at runtime by Key Vault). -->
+    <record id="ir_config_o18_url" model="ir.config_parameter">
+        <field name="key">pes_odoo18_extractor.url</field>
+        <field name="value">https://erp.portlandiaelectric.supply</field>
+    </record>
+    <record id="ir_config_o18_db" model="ir.config_parameter">
+        <field name="key">pes_odoo18_extractor.db</field>
+        <field name="value">portlandia_prod</field>
+    </record>
+    <!-- Username + password are intentionally NOT seeded.
+         Set the Key Vault secret 'odoo18-reader-credentials' instead. -->
+</odoo>

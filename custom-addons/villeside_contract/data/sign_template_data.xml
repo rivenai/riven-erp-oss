@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sign template scaffold for 2027 Alta Ave private party contract -->
+        <record id="sign_template_2027_alta" model="sign.template">
+            <field name="name">Private Party Purchase Contract - 2027 Alta Ave, Louisville KY</field>
+            <field name="tag_ids" eval="[(0, 0, {'name': 'Real Estate Transaction'})]"/>
+        </record>
+    </data>
+</odoo>

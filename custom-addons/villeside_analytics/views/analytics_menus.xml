@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_analytics_root"
+              name="Analytics"
+              web_icon="villeside_analytics,static/description/icon.png"
+              sequence="25"/>
+
+    <!-- Agent Performance Submenu -->
+    <menuitem id="menu_analytics_agent"
+              name="Agent Performance"
+              parent="menu_analytics_root"
+              action="action_analytics_agent"
+              sequence="10"/>
+
+    <!-- Market Analytics Submenu -->
+    <menuitem id="menu_analytics_market"
+              name="Market Snapshots"
+              parent="menu_analytics_root"
+              action="action_analytics_market"
+              sequence="20"/>
+
+    <!-- Pipeline Snapshots Submenu -->
+    <menuitem id="menu_analytics_pipeline"
+              name="Pipeline Snapshots"
+              parent="menu_analytics_root"
+              action="action_analytics_pipeline"
+              sequence="30"/>
+</odoo>

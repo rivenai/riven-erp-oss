@@ -1,0 +1,59 @@
+import logging
+from odoo import models, api
+
+_logger = logging.getLogger(__name__)
+
+DEFAULT_TIC = 'PC070000'  # General Tangible Personal Property - Electrical Equipment
+
+
+class AccountExternalTaxMixinTaxCloud(models.AbstractModel):
+    """PES TaxCloud override: replace Avalara validation with TaxCloud TIC fallback.
+    When a product has no avatax_category_id, use PC070000 (General Tangible PP)
+    instead of raising a UserError. This enables TaxCloud to compute taxes
+    on invoices that include shipping, fee, or non-categorized product lines.
+    """
+    _inherit = 'account.external.tax.mixin'
+
+    def _prepare_avatax_document_line_service_call(self, line_data, is_refund):
+        """Override to use TaxCloud TIC fallback instead of Avalara error.
+        When product has no avatax_category_id, assign DEFAULT_TIC (PC070000)
+        instead of raising UserError.
+        """
+        base_line = line_data.get('base_line', {})
+        product = base_line.get('product_id')
+
+        # If product is falsy or has no avatax_category_id, inject the default TIC
+        if not product or not product._get_avatax_category_id():
+            _logger.info(
+                'TaxCloud: no avatax_category for product=%s, using TIC=%s',
+                product.display_name if product else 'None',
+                DEFAULT_TIC
+            )
+            # Temporarily patch product to have an avatax_category_id equivalent
+            # by overriding base_line and constructing the result directly
+            subtotal = line_data.get('tax_details', {}).get('total_excluded_currency', 0.0)
+            if hasattr(base_line, 'get'):
+                # base_line is a dict from base tax computation
+                item_code = base_line.get('product_code', '') or 'MISC'
+                description = base_line.get('name', '') or 'Misc Line'
+                quantity = abs(float(base_line.get('quantity', 1.0)))
+            else:
+                item_code = getattr(product, 'default_code', '') or 'MISC'
+                description = getattr(product, 'name', '') or 'Misc'
+                quantity = 1.0
+
+            amount = -float(subtotal) if is_refund else float(subtotal)
+            return {
+                'amount': amount,
+                'description': description,
+                'quantity': quantity,
+                'taxCode': DEFAULT_TIC,
+                'itemCode': item_code,
+                'number': '%s,%s' % (
+                    getattr(base_line.get('record', product), '_name', 'line'),
+                    getattr(base_line.get('record', product), 'id', 0)
+                ),
+            }
+
+        # If product has avatax_category_id, use the standard flow
+        return super()._prepare_avatax_document_line_service_call(line_data, is_refund)

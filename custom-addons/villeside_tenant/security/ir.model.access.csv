@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tenant_lease_user,villeside.tenant.lease.user,model_villeside_tenant_lease,base.group_user,1,1,1,0
+access_tenant_lease_manager,villeside.tenant.lease.manager,model_villeside_tenant_lease,base.group_system,1,1,1,1
+access_tenant_payment_user,villeside.tenant.payment.user,model_villeside_tenant_payment,base.group_user,1,1,1,0
+access_tenant_payment_manager,villeside.tenant.payment.manager,model_villeside_tenant_payment,base.group_system,1,1,1,1
+access_tenant_screening_user,villeside.tenant.screening.user,model_villeside_tenant_screening,base.group_user,1,1,1,0
+access_tenant_screening_manager,villeside.tenant.screening.manager,model_villeside_tenant_screening,base.group_system,1,1,1,1
